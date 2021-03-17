@@ -1,0 +1,25 @@
+{
+  "Pages": [
+    {
+      "Elements": [
+        {
+          "Options": [
+            {
+              "Value": "北海道",
+              "Label": "北海道"
+            },
+            {
+              "Value": "青森県",
+              "Label": "青森県"
+            }
+          ],
+          "Type": "dropdown",
+          "Required": true,
+          "OptionsCaption": "選択してください",
+          "Label": "あなたがお住まいの地域をお知らせください。",
+          "QuestionKey": "field1"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,729 @@
+{
+  "Pages": [
+    {
+      "Elements": [
+        {
+          "Options": [
+            {
+              "Value": "北海道",
+              "Label": "北海道"
+            },
+            {
+              "Value": "青森県",
+              "Label": "青森県"
+            },
+            {
+              "Value": "岩手県",
+              "Label": "岩手県"
+            },
+            {
+              "Value": "宮城県",
+              "Label": "宮城県"
+            },
+            {
+              "Value": "秋田県",
+              "Label": "秋田県"
+            },
+            {
+              "Value": "山形県",
+              "Label": "山形県"
+            },
+            {
+              "Value": "福島県",
+              "Label": "福島県"
+            },
+            {
+              "Value": "茨城県",
+              "Label": "茨城県"
+            },
+            {
+              "Value": "栃木県",
+              "Label": "栃木県"
+            },
+            {
+              "Value": "群馬県",
+              "Label": "群馬県"
+            },
+            {
+              "Value": "埼玉県",
+              "Label": "埼玉県"
+            },
+            {
+              "Value": "千葉県",
+              "Label": "千葉県"
+            },
+            {
+              "Value": "東京都",
+              "Label": "東京都"
+            },
+            {
+              "Value": "神奈川県",
+              "Label": "神奈川県"
+            },
+            {
+              "Value": "新潟県",
+              "Label": "新潟県"
+            },
+            {
+              "Value": "富山県",
+              "Label": "富山県"
+            },
+            {
+              "Value": "石川県",
+              "Label": "石川県"
+            },
+            {
+              "Value": "福井県",
+              "Label": "福井県"
+            },
+            {
+              "Value": "山梨県",
+              "Label": "山梨県"
+            },
+            {
+              "Value": "長野県",
+              "Label": "長野県"
+            },
+            {
+              "Value": "岐阜県",
+              "Label": "岐阜県"
+            },
+            {
+              "Value": "静岡県",
+              "Label": "静岡県"
+            },
+            {
+              "Value": "愛知県",
+              "Label": "愛知県"
+            },
+            {
+              "Value": "三重県",
+              "Label": "三重県"
+            },
+            {
+              "Value": "滋賀県",
+              "Label": "滋賀県"
+            },
+            {
+              "Value": "京都府",
+              "Label": "京都府"
+            },
+            {
+              "Value": "大阪府",
+              "Label": "大阪府"
+            },
+            {
+              "Value": "兵庫県",
+              "Label": "兵庫県"
+            },
+            {
+              "Value": "奈良県",
+              "Label": "奈良県"
+            },
+            {
+              "Value": "和歌山県",
+              "Label": "和歌山県"
+            },
+            {
+              "Value": "鳥取県",
+              "Label": "鳥取県"
+            },
+            {
+              "Value": "島根県",
+              "Label": "島根県"
+            },
+            {
+              "Value": "岡山県",
+              "Label": "岡山県"
+            },
+            {
+              "Value": "広島県",
+              "Label": "広島県"
+            },
+            {
+              "Value": "山口県",
+              "Label": "山口県"
+            },
+            {
+              "Value": "徳島県",
+              "Label": "徳島県"
+            },
+            {
+              "Value": "香川県",
+              "Label": "香川県"
+            },
+            {
+              "Value": "愛媛県",
+              "Label": "愛媛県"
+            },
+            {
+              "Value": "高知県",
+              "Label": "高知県"
+            },
+            {
+              "Value": "福岡県",
+              "Label": "福岡県"
+            },
+            {
+              "Value": "佐賀県",
+              "Label": "佐賀県"
+            },
+            {
+              "Value": "長崎県",
+              "Label": "長崎県"
+            },
+            {
+              "Value": "熊本県",
+              "Label": "熊本県"
+            },
+            {
+              "Value": "大分県",
+              "Label": "大分県"
+            },
+            {
+              "Value": "宮崎県",
+              "Label": "宮崎県"
+            },
+            {
+              "Value": "鹿児島県",
+              "Label": "鹿児島県"
+            },
+            {
+              "Value": "沖縄県",
+              "Label": "沖縄県"
+            }
+          ],
+          "Type": "dropdown",
+          "Required": true,
+          "OptionsCaption": "選択してください",
+          "Label": "あなたがお住まいの地域をお知らせください。",
+          "QuestionKey": "field1"
+        },
+        {
+          "Placeholder": "よろしければ、お住いの市・区・町・村をお知らせください。（任意）",
+          "Type": "text",
+          "Required": false,
+          "Label": "よろしければ、お住いの市・区・町・村をお知らせください。（任意）",
+          "QuestionKey": "field2"
+        },
+        {
+          "Options": [
+            {
+              "Value": "1人",
+              "Label": "1人"
+            },
+            {
+              "Value": "2人",
+              "Label": "2人"
+            },
+            {
+              "Value": "3人",
+              "Label": "3人"
+            },
+            {
+              "Value": "4人",
+              "Label": "4人"
+            },
+            {
+              "Value": "5人",
+              "Label": "5人"
+            },
+            {
+              "Value": "6人以上",
+              "Label": "6人以上"
+            }
+          ],
+          "Type": "dropdown",
+          "Required": true,
+          "OptionsCaption": "選択してください",
+          "Label": "あなたは何人でお住まいですか？（あなたも含めた人数をお知らせください）",
+          "QuestionKey": "field3"
+        },
+        {
+          "Options": [
+            {
+              "Value": "すでに申請した",
+              "Label": "すでに申請した"
+            },
+            {
+              "Value": "これから申請する",
+              "Label": "これから申請する"
+            },
+            {
+              "Value": "申請はしない",
+              "Label": "申請はしない"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Label": "今回の新型コロナウイルス感染症に関連する補助金や助成金・給付金の申請をしましたか？",
+          "QuestionKey": "field4"
+        },
+        {
+          "Options": [
+            {
+              "Value": "【個人】特別定額給付金",
+              "Label": "【個人】特別定額給付金"
+            },
+            {
+              "Value": "【個人】小学校等の臨時休業に対応する保護者支援",
+              "Label": "【個人】小学校等の臨時休業に対応する保護者支援"
+            },
+            {
+              "Value": "【個人・法人】企業主導型ベビーシッター利用者支援事業（特例措置）",
+              "Label": "【個人・法人】企業主導型ベビーシッター利用者支援事業（特例措置）"
+            },
+            {
+              "Value": "【個人・個人事業主】国民健康保険料（税）の減免に対する財政支援",
+              "Label": "【個人・個人事業主】国民健康保険料（税）の減免に対する財政支援"
+            },
+            {
+              "Value": "【個人】傷病手当（全国健康保険協会 ）",
+              "Label": "【個人】傷病手当（全国健康保険協会 ）"
+            },
+            {
+              "Value": "【個人事業主・法人】持続化給付金",
+              "Label": "【個人事業主・法人】持続化給付金"
+            },
+            {
+              "Value": "【個人・法人】雇用調整助成金（新型コロナウイルス感染症特例措置）",
+              "Label": "【個人・法人】雇用調整助成金（新型コロナウイルス感染症特例措置）"
+            },
+            {
+              "Value": "【法人】新型コロナウイルス感染症による小学校休業等対応助成金",
+              "Label": "【法人】新型コロナウイルス感染症による小学校休業等対応助成金"
+            },
+            {
+              "Value": "【法人】ものづくり・商業・サービス生産性向上促進補助金（特別枠）",
+              "Label": "【法人】ものづくり・商業・サービス生産性向上促進補助金（特別枠）"
+            },
+            {
+              "Value": "【個人事業主・法人】小規模事業者持続化補助金（特別枠）",
+              "Label": "【個人事業主・法人】小規模事業者持続化補助金（特別枠）"
+            },
+            {
+              "Value": "【法人】IT導入補助金（C類型・特別枠）",
+              "Label": "【法人】IT導入補助金（C類型・特別枠）"
+            },
+            {
+              "Value": "その他",
+              "Label": "その他"
+            }
+          ],
+          "Type": "checkbox",
+          "Required": true,
+          "Visible": "${field4} && ['申請はしない'].some(item => item !== ${field4})",
+          "Label": "あなたの申請した、申請する補助金や助成金・給付金の種類をお知らせください。（特別定額給付金については、世帯主でなくても申請したことが分かっていれば選択ください）",
+          "QuestionKey": "field5"
+        },
+        {
+          "Options": [
+            {
+              "Value": "オンラインによる申請",
+              "Label": "オンラインによる申請"
+            },
+            {
+              "Value": "郵送による申請",
+              "Label": "郵送による申請"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Visible": "['すでに申請した'].includes(${field4}) && ${field5} && ${field5}.some(item => ['【個人】特別定額給付金'].includes(item))",
+          "Label": "特別定額給付金の申請方法をお知らせください。",
+          "QuestionKey": "field6"
+        },
+        {
+          "Options": [
+            {
+              "Value": "５月中",
+              "Label": "５月中"
+            },
+            {
+              "Value": "６月１週目",
+              "Label": "６月１週目"
+            },
+            {
+              "Value": "６月２週目",
+              "Label": "６月２週目"
+            },
+            {
+              "Value": "６月３週目",
+              "Label": "６月３週目"
+            },
+            {
+              "Value": "６月４週目",
+              "Label": "６月４週目"
+            },
+            {
+              "Value": "７月１週目",
+              "Label": "７月１週目"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Visible": "['すでに申請した'].includes(${field4}) && ${field5} && ${field5}.some(item => ['【個人】特別定額給付金'].includes(item))",
+          "Label": "いつ頃に申請をしましたか？",
+          "QuestionKey": "field7"
+        },
+        {
+          "Options": [
+            {
+              "Value": "６月１週目に給付された",
+              "Label": "６月１週目に給付された"
+            },
+            {
+              "Value": "６月２週目に給付された",
+              "Label": "６月２週目に給付された"
+            },
+            {
+              "Value": "６月３週目に給付された",
+              "Label": "６月３週目に給付された"
+            },
+            {
+              "Value": "６月４週目に給付された",
+              "Label": "６月４週目に給付された"
+            },
+            {
+              "Value": "７月１週目に給付された",
+              "Label": "７月１週目に給付された"
+            },
+            {
+              "Value": "給付されたがいつかわからない",
+              "Label": "給付されたがいつかわからない"
+            },
+            {
+              "Value": "まだ給付されていない",
+              "Label": "まだ給付されていない"
+            },
+            {
+              "Value": "確認していない",
+              "Label": "確認していない"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Visible": "['すでに申請した'].includes(${field4}) && ${field5} && ${field5}.some(item => ['【個人】特別定額給付金'].includes(item))",
+          "Label": "特別定額給付金は指定金融機関へ給付されましたか？",
+          "QuestionKey": "field8"
+        },
+        {
+          "Type": "html",
+          "Html": "<b>特別定額給付金</b>は、日本における新型コロナウイルス感染症による経済的影響への緊急経済対策の一施策として、2020年に実施される日本に住民基本台帳がある世帯主に定額の現金を給付する制度、またはその給付金である。（給付対象者1人につき10万円）",
+          "QuestionKey": "field22"
+        },
+        {
+          "Options": [
+            {
+              "Value": "妥当だと思う",
+              "Label": "妥当だと思う"
+            },
+            {
+              "Value": "妥当だと思わない",
+              "Label": "妥当だと思わない"
+            },
+            {
+              "Value": "わからない",
+              "Label": "わからない"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Label": "特別定額給付金の1人あたり10万円は妥当だと思いますか？",
+          "QuestionKey": "field9"
+        },
+        {
+          "Placeholder": "特別定額給付金は1人あたりいくらなら妥当だと思いますか？（半角数字のみ入力できます）",
+          "Type": "text",
+          "Required": true,
+          "Visible": "['妥当だと思わない'].includes(${field9})",
+          "Label": "特別定額給付金は1人あたりいくらなら妥当だと思いますか？（半角数字のみ入力できます）",
+          "Validators": [
+            {
+              "Type": "expression",
+              "Expression": "${field10} && ${field10}.match(/^[0-9]+$/)",
+              "Text": "入力できるのは半角数字のみです"
+            }
+          ],
+          "QuestionKey": "field10"
+        },
+        {
+          "Options": [
+            {
+              "Value": "貯金・預金",
+              "Label": "貯金・預金"
+            },
+            {
+              "Value": "家賃",
+              "Label": "家賃"
+            },
+            {
+              "Value": "光熱費（水道・ガス・電気）",
+              "Label": "光熱費（水道・ガス・電気）"
+            },
+            {
+              "Value": "飲食費（外食も含む）",
+              "Label": "飲食費（外食も含む）"
+            },
+            {
+              "Value": "通信費（携帯スマホ代・ネット代）",
+              "Label": "通信費（携帯スマホ代・ネット代）"
+            },
+            {
+              "Value": "学費",
+              "Label": "学費"
+            },
+            {
+              "Value": "返済",
+              "Label": "返済"
+            },
+            {
+              "Value": "旅行",
+              "Label": "旅行"
+            },
+            {
+              "Value": "洋服",
+              "Label": "洋服"
+            },
+            {
+              "Value": "化粧品・美容",
+              "Label": "化粧品・美容"
+            },
+            {
+              "Value": "趣味",
+              "Label": "趣味"
+            },
+            {
+              "Value": "寄付",
+              "Label": "寄付"
+            },
+            {
+              "Value": "家族へ譲る",
+              "Label": "家族へ譲る"
+            },
+            {
+              "Value": "自分の手元に入る給付金はない",
+              "Label": "自分の手元に入る給付金はない"
+            },
+            {
+              "Value": "その他",
+              "Label": "その他"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Visible": "['すでに申請した'].includes(${field4}) && ${field5} && ${field5}.some(item => ['【個人】特別定額給付金'].includes(item))",
+          "Label": "特別定額給付金の主な使い道をお知らせください。",
+          "QuestionKey": "field11"
+        },
+        {
+          "Placeholder": "その他とした、特別定額給付金の主な使い道をお知らせください。",
+          "Type": "text",
+          "Required": true,
+          "Visible": "['すでに申請した'].includes(${field4}) && ${field5} && ${field5}.some(item => ['【個人】特別定額給付金'].includes(item)) && ['その他'].includes(${field11})",
+          "Label": "その他とした、特別定額給付金の主な使い道をお知らせください。",
+          "QuestionKey": "field12"
+        },
+        {
+          "Placeholder": "特別定額給付金に関しての不満や意見をお知らせください。どんなことでも結構です。",
+          "Type": "textarea",
+          "Required": true,
+          "Label": "特別定額給付金に関しての不満や意見をお知らせください。どんなことでも結構です。",
+          "Validators": [
+            {
+              "Type": "text",
+              "MinLength": 15,
+              "Text": "15文字以上で入力してください"
+            }
+          ],
+          "PriceMax": 5,
+          "QuestionKey": "field13"
+        },
+        {
+          "Options": [
+            {
+              "Value": "電子申請",
+              "Label": "電子申請"
+            },
+            {
+              "Value": "申請サポート会場",
+              "Label": "申請サポート会場"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Visible": "['すでに申請した'].includes(${field4}) && ${field5} && ${field5} && ${field5}.some(item => ['【個人事業主・法人】持続化給付金'].includes(item))",
+          "Label": "持続化給付金の申請方法をお知らせください。",
+          "QuestionKey": "field14"
+        },
+        {
+          "Options": [
+            {
+              "Value": "５月中",
+              "Label": "５月中"
+            },
+            {
+              "Value": "６月１週目",
+              "Label": "６月１週目"
+            },
+            {
+              "Value": "６月２週目",
+              "Label": "６月２週目"
+            },
+            {
+              "Value": "６月３週目",
+              "Label": "６月３週目"
+            },
+            {
+              "Value": "６月４週目",
+              "Label": "６月４週目"
+            },
+            {
+              "Value": "７月１週目",
+              "Label": "７月１週目"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Visible": "['すでに申請した'].includes(${field4}) && ${field5} && ${field5} && ${field5}.some(item => ['【個人事業主・法人】持続化給付金'].includes(item))",
+          "Label": "いつ頃に申請をしましたか？",
+          "QuestionKey": "field15"
+        },
+        {
+          "Options": [
+            {
+              "Value": "あった",
+              "Label": "あった"
+            },
+            {
+              "Value": "なかった",
+              "Label": "なかった"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Visible": "['すでに申請した'].includes(${field4}) && ${field5} && ${field5} && ${field5}.some(item => ['【個人事業主・法人】持続化給付金'].includes(item))",
+          "Label": "持続化給付金の申請後に差戻はありましたか？",
+          "QuestionKey": "field16"
+        },
+        {
+          "Options": [
+            {
+              "Value": "６月１週目に給付された",
+              "Label": "６月１週目に給付された"
+            },
+            {
+              "Value": "６月２週目に給付された",
+              "Label": "６月２週目に給付された"
+            },
+            {
+              "Value": "６月３週目に給付された",
+              "Label": "６月３週目に給付された"
+            },
+            {
+              "Value": "６月４週目に給付された",
+              "Label": "６月４週目に給付された"
+            },
+            {
+              "Value": "７月１週目に給付された",
+              "Label": "７月１週目に給付された"
+            },
+            {
+              "Value": "給付されたがいつかわからない",
+              "Label": "給付されたがいつかわからない"
+            },
+            {
+              "Value": "まだ給付されていない",
+              "Label": "まだ給付されていない"
+            },
+            {
+              "Value": "確認していない",
+              "Label": "確認していない"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Visible": "['すでに申請した'].includes(${field4}) && ${field5} && ${field5} && ${field5}.some(item => ['【個人事業主・法人】持続化給付金'].includes(item))",
+          "Label": "持続化給付金は指定金融機関へ給付されましたか？",
+          "QuestionKey": "field17"
+        },
+        {
+          "Type": "html",
+          "Html": "<b>持続化給付金</b>は、日本における新型コロナウイルス感染症により、特に大きな影響を受けている事業者に対して、事業の継続を支え再起の糧となる、事業全般に広く使える給付金を支給する制度、またはその給付金である。（上限として中小法人等は200万円、個人事業者等は100万円）",
+          "QuestionKey": "field23"
+        },
+        {
+          "Options": [
+            {
+              "Value": "妥当だと思う",
+              "Label": "妥当だと思う"
+            },
+            {
+              "Value": "妥当だと思わない",
+              "Label": "妥当だと思わない"
+            },
+            {
+              "Value": "わからない",
+              "Label": "わからない"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Label": "持続化給付金の上限として中小法人等は200万円、個人事業者等は100万円は妥当だと思いますか？",
+          "QuestionKey": "field18"
+        },
+        {
+          "Placeholder": "なぜ持続型給付金の上限についてそのように思うかお知らせください。",
+          "Type": "text",
+          "Required": true,
+          "Visible": "${field18} && ['わからない'].some(item => item !== ${field18})",
+          "Label": "なぜ持続型給付金の上限についてそのように思うかお知らせください。",
+          "QuestionKey": "field19"
+        },
+        {
+          "Options": [
+            {
+              "Value": "かなり早い",
+              "Label": "かなり早い"
+            },
+            {
+              "Value": "早い",
+              "Label": "早い"
+            },
+            {
+              "Value": "妥当",
+              "Label": "妥当"
+            },
+            {
+              "Value": "遅い",
+              "Label": "遅い"
+            },
+            {
+              "Value": "かなり遅い",
+              "Label": "かなり遅い"
+            }
+          ],
+          "Type": "radio",
+          "Required": true,
+          "Label": "今回の新型コロナウイルス感染症に関連する補助金や助成金・給付金に関しての政府の対応スピードについてどう思いますか？",
+          "QuestionKey": "field20"
+        },
+        {
+          "Placeholder": "今回の新型コロナウイルス感染症に関連する補助金や助成金・給付金に関しての【政府の対応に関して】不満に思うことや、意見などお知らせください。",
+          "Type": "textarea",
+          "Required": true,
+          "Label": "今回の新型コロナウイルス感染症に関連する補助金や助成金・給付金に関しての【政府の対応に関して】不満に思うことや、意見などお知らせください。",
+          "Validators": [
+            {
+              "Type": "text",
+              "MinLength": 15,
+              "Text": "15文字以上で入力してください"
+            }
+          ],
+          "PriceMax": 5,
+          "QuestionKey": "field21"
+        }
+      ]
+    }
+  ]
+}
