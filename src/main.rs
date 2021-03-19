@@ -6,7 +6,6 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 use xlsxwriter::Workbook;
-// use time_graph;
 
 const DATA_PATH: &'static str = "./";
 fn main() {
@@ -20,8 +19,5 @@ fn main() {
     writer::create_output_file(&path_meta, &path_data, output_name).unwrap();
     let time = time.elapsed().as_millis();
     println!("Finished processing in {} milliseconds", time);
-    // let graph = time_graph::get_full_graph();
-    // let mut graph_file = std::fs::File::create("graph.dot").unwrap();
-    // graph_file.write_all(graph.as_dot().as_bytes()).unwrap();
 
 }
