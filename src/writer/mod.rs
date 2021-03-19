@@ -1,5 +1,6 @@
 use crate::ds::{DataSet, DataSetConfig, CrosstabType};
 use crate::errors::RustlyzerError;
+use chrono::prelude::*;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
@@ -7,24 +8,30 @@ use xlsxwriter::{FormatColor, Workbook, WorksheetRow, WorksheetCol, Worksheet, F
 use crate::ds::table::{Table, TableWithMeta, SpecialCase};
 
 pub fn create_output_file(
-    path_meta: &Path,
-    path_input: &Path,
-    output_name: &str,
-) -> Result<String, RustlyzerError> {
+    meta_path: &str,
+    input_path: &str,
+    output_path: &str,
+    lng: &str,
+    created_year: u16
+
+) -> Result<(), RustlyzerError> {
+    let input_path = Path::new(input_path);
+    let meta_path = Path::new(meta_path);
+    let output_path =  Path::new(output_path);
     let io_read_time = std::time::Instant::now();
     let mut meta = String::new();
     let mut data = String::new();
 
-    File::open(&path_meta)?.read_to_string(&mut meta)?;
-    File::open(&path_input)?.read_to_string(&mut data)?;
-
-    let config = DataSetConfig::new(String::from("ja"), 2020);
+    File::open(meta_path)?.read_to_string(&mut meta)?;
+    File::open(input_path)?.read_to_string(&mut data)?;
+    let temp_file_name = format!("{}.xlsx", Utc::now().format("%Y%m%d_%H%M%S%f").to_string());
+    let config = DataSetConfig::new(lng.to_string(), created_year);
 
     let dataset = DataSet::from_data(meta.as_ref(), config, data.as_ref()).unwrap();
     let io_read_time = io_read_time.elapsed().as_millis();
     println!("IO read time is {} milliseconds", io_read_time);
     println!("Loading done!");
-    let workbook = Workbook::new(output_name);
+    let workbook = Workbook::new(&temp_file_name);
 
     // Formats
     let mut bg_normal = workbook.add_format().set_bg_color(FormatColor::Custom(0xc6efce))
@@ -367,9 +374,37 @@ pub fn create_output_file(
 
     workbook.close()?;
 
-    println!("Done! Xlsx file created.");
-    Ok(format!("./{}", output_name))
+    let temp_file_path = std::env::current_dir()?.join(&temp_file_name);
+    println!("{:?}", temp_file_path);
+    std::fs::copy(temp_file_path, output_path)?;
+    clean_file_or_current_dir(Some(&temp_file_name));
 
+    println!("Done! Xlsx file created.");
+    // Ok(format!("./{}", output_name))
+    Ok(())
+
+}
+
+fn clean_file_or_current_dir(file: Option<&str>) -> std::io::Result<()> {
+    let mut current_dir = std::env::current_dir()?;
+    match file {
+        Some(file_name) => {
+            current_dir.push(file_name);
+            std::fs::remove_file(current_dir)?
+        },
+        None => {
+            for entry in std::fs::read_dir(current_dir)? {
+                if let Ok(entry) = entry {
+                    if !entry.file_name().into_string().unwrap().contains(".xlsx") {
+                        continue;
+                    } else {
+                        std::fs::remove_file(entry.path());
+                    }
+                }
+            }
+        }
+    };
+    Ok(())
 }
 
 fn write_table(
