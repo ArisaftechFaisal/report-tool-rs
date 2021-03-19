@@ -6,22 +6,18 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 use xlsxwriter::Workbook;
-// use time_graph;
 
 const DATA_PATH: &'static str = "./";
 fn main() {
-    // time_graph::enable_data_collection(true);
     let time = std::time::Instant::now();
-    let path_meta = Path::new(DATA_PATH).join("meta.json");
-    let path_data = Path::new(DATA_PATH).join("input.csv");
-    // let path_output = Path::new(DATA_PATH).join("output.xlsx");
-    let output_name = "output.xlsx";
+    let path_meta = "/home/faisal/meta.json";
+    let path_input = "/home/faisal/input.csv";
+    let output_path = "/home/faisal/output.xlsx";
+    let lng = "ja".to_string();
+    let created_year = 2020 as u16;
 
-    writer::create_output_file(&path_meta, &path_data, output_name).unwrap();
+    writer::create_output_file(&path_meta, &path_input, output_path, &lng, created_year).unwrap();
     let time = time.elapsed().as_millis();
     println!("Finished processing in {} milliseconds", time);
-    // let graph = time_graph::get_full_graph();
-    // let mut graph_file = std::fs::File::create("graph.dot").unwrap();
-    // graph_file.write_all(graph.as_dot().as_bytes()).unwrap();
 
 }
