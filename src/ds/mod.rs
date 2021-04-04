@@ -28,7 +28,15 @@ impl DataSet {
         RustlyzerError> {
         let meta = Meta::from_json(meta_str)?;
         let data = Data::from_csv(content_str)?;
+        DataSet::validate_birth_years(&data, &config)?;
         Ok(DataSet { meta, config, data })
+    }
+
+   fn validate_birth_years(data: &Data, config: &DataSetConfig) -> Result<(), RustlyzerError> {
+        for (row, record) in data.records.iter().enumerate() {
+           record.validate_birth_year(config.created_year, row)?;
+        }
+        Ok(())
     }
 
     pub fn get_fkc_raw_table(&self) -> Result<Table, RustlyzerError> {

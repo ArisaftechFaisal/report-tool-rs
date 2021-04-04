@@ -8,10 +8,8 @@ use chrono::prelude::*;
 use hashbrown::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::iter::Iterator;
-use crate::ds::data::PurchaseStatus::Purchased;
-use crate::ds::field::FieldType::AgeGroup1060;
-use std::process::Child;
+// use std::iter::Iterator;
+// use std::process::Child;
 
 pub mod computed;
 
@@ -174,6 +172,18 @@ impl InputRecord {
         }
     }
 
+    pub fn validate_birth_year(&self, created_year: u16, row: usize) -> Result<(), RustlyzerError>{
+        let age = (created_year as i16 - self.birth_year as i16);
+        if age < 0 {
+            return Err(RustlyzerError::InvalidDataError {
+                field: "birth_year".to_string(),
+                val: self.birth_year.to_string(),
+                row: Some(row + 2)
+            });
+        }
+        Ok(())
+    }
+
     fn get_custom_field_str(
         &self,
         field: &FieldType,
@@ -249,7 +259,10 @@ impl InputRecord {
 
     fn get_age(&self, created_year: u16) -> u8 {
         // (Utc::now().year() as u16 - self.birth_year) as u8
-        (created_year - self.birth_year) as u8
+        // println!("Birth year: {:?}", self.birth_year);
+        let age = (created_year - self.birth_year) as u8;
+        age
+        // (created_year - self.birth_year) as u8
     }
 
     fn get_age_group_1060(&self, created_year: u16) -> AgeRange1060 {
@@ -392,6 +405,8 @@ enum PurchaseStatus {
     // NotPurchased,
     #[serde(rename = "rejected")]
     Rejected,
+    #[serde(rename = "evaluated")]
+    Evaluated
 }
 
 impl EnumAttrs<PurchaseStatus> for PurchaseStatus {
@@ -401,6 +416,7 @@ impl EnumAttrs<PurchaseStatus> for PurchaseStatus {
                 match self {
                     PurchaseStatus::Purchased => "Purchased",
                     PurchaseStatus::Rejected => "Rejected",
+                    PurchaseStatus::Evaluated => "Evaluated"
                 }
             }
         }
@@ -409,16 +425,17 @@ impl EnumAttrs<PurchaseStatus> for PurchaseStatus {
     fn get_all() -> Vec<PurchaseStatus> {
         vec![
             PurchaseStatus::Purchased,
-            PurchaseStatus::Rejected
+            PurchaseStatus::Rejected,
+            PurchaseStatus::Evaluated
         ]
     }
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 enum Gender {
-    #[serde(rename = "male")]
+    #[serde(alias = "male", alias = "男")]
     Male,
-    #[serde(rename = "female")]
+    #[serde(rename = "female", alias = "女")]
     Female,
 }
 
@@ -450,9 +467,9 @@ impl EnumAttrs<Gender> for Gender {
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 enum MaritalStatus {
-    #[serde(rename = "single")]
+    #[serde(alias = "single", alias = "未婚")]
     Single,
-    #[serde(rename = "married")]
+    #[serde(alias = "married", alias = "既婚")]
     Married,
 }
 

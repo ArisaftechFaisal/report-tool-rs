@@ -4,7 +4,7 @@ use thiserror::Error;
 use std::option::NoneError;
 use std::num::ParseIntError;
 
-#[derive(Error, Debug, Deserialize)]
+#[derive(Error, Debug, Deserialize, Serialize)]
 pub enum RustlyzerError {
     #[error("Wrong format for metadata json")]
     MetadataWrongFormat,
@@ -29,7 +29,14 @@ pub enum RustlyzerError {
     #[error("Item does not exist in vec")]
     NoneError,
     #[error("Integer number couldn't be parsed from string")]
-    ParseIntError
+    ParseIntError,
+    #[error("Invalid {field}: {val} at row {:?}", if let Some(r) = .row {r.to_string()} else
+    {"unknown".to_string()})]
+    InvalidDataError {
+        field: String,
+        val: String,
+        row: Option<usize>
+    }
 }
 
 impl From<csv::Error> for RustlyzerError {
