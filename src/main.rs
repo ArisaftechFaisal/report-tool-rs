@@ -10,11 +10,11 @@ use xlsxwriter::Workbook;
 const DATA_PATH: &'static str = "./";
 fn main() {
     let time = std::time::Instant::now();
-    let path_meta = "/home/faisal/meta2.json";
-    let path_input = "/home/faisal/input2.csv";
-    let output_path = "/home/faisal/output.xlsx";
+    let path_meta = "/home/faisal/meta_latest.json";
+    let path_input = "/home/faisal/input_latest.csv";
+    let output_path = "/home/faisal/output_latest.xlsx";
     let lng = "ja".to_string();
-    let created_year = 2020 as u16;
+    let created_year = 2021 as u16;
 
     match writer::create_output_file(&path_meta, &path_input, output_path, &lng, created_year)
     {

@@ -54,7 +54,8 @@ impl DataSet {
             FieldType::Children,
             FieldType::YearlyIncome,
         ];
-        fields.extend(self.custom_fields_with_options_all());
+        // fields.extend(self.custom_fields_with_options_all());
+        fields.extend(self.custom_fields_except_html());
         let mut cols = Vec::<Column>::new();
         for field in fields.iter() {
             cols.extend(self.get_cols_for_field(field)?)
@@ -80,7 +81,8 @@ impl DataSet {
             FieldType::MaritalStatusAndChildren,
             FieldType::YearlyIncome,
         ];
-        fields.extend(self.custom_fields_with_options_all());
+        // fields.extend(self.custom_fields_with_options_all());
+        fields.extend(self.custom_fields_except_html());
         let mut cols = Vec::<Column>::new();
         for field in fields.iter() {
             cols.extend(self.get_cols_for_field(field)?)
@@ -376,6 +378,20 @@ impl DataSet {
                 }
             })
             .map(|(k, _)| FieldType::Custom(k.to_owned()))
+            .collect::<Vec<FieldType>>()
+    }
+
+    fn custom_fields_except_html(&self) -> Vec<FieldType> {
+        self.meta
+            .custom_fields
+            .iter()
+            .filter(|(k,v)| {
+                match v.variant {
+                    CustomFieldVariant::Html {..} => false,
+                    _ => true
+                }
+            })
+            .map(|(k, _)| FieldType::Custom((k.to_owned())))
             .collect::<Vec<FieldType>>()
     }
 
