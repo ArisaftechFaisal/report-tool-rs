@@ -72,7 +72,7 @@ pub trait EnumAttrs<T: EnumAttrs<T> + Sized>: Clone
 
     fn display_name_of_enum(lng: Language) -> String;
     fn display_name(&self, lng: Language) -> String {
-        self.as_string()
+        self.as_string(lng)
     }
 
     fn get_all_display_names(lng: Language) -> Vec<String> {
@@ -80,16 +80,16 @@ pub trait EnumAttrs<T: EnumAttrs<T> + Sized>: Clone
         all.into_iter().map(|this| this.display_name(lng)).collect::<Vec<String>>()
     }
     fn from_display_name(name: &str, lng: Language) -> Result<Self, RustlyzerError> {
-       let all_names = Self::get_all_display_names(lng);
-        for display_name in all_name.iter() {
-            if display_name.as_str() == name {
-                return Ok(this.to_owned());
+       let all = Self::get_all();
+        for variant in all.iter() {
+            if variant.display_name(lng).as_str() == name {
+                return Ok(variant.to_owned());
             }
-        };
+        }
         Err(RustlyzerError::InvalidConfigError {
-            config_item: Self::display_name_of_enum(),
+            config_item: Self::display_name_of_enum(lng),
             val: name.to_string(),
-            expected_values: all_names
+            expected_values: Self::get_all_display_names(lng)
         })
     }
 }

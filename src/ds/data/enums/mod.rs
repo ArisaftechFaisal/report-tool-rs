@@ -46,7 +46,7 @@ impl EnumAttrs<PurchaseStatus> for PurchaseStatus {
             Language::En => "PurchaseStatus",
             Language::Ja => "購入ステータス"
         };
-        res.into_string()
+        res.to_string()
     }
 
 }
@@ -382,7 +382,8 @@ impl EnumAttrs<ChildrenRange> for ChildrenRange {
         let res = match lng {
             Language::En => "Children",
             Language::Ja => "子供数",
-        }
+        };
+        res.to_string()
     }
 }
 

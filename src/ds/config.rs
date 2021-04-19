@@ -17,7 +17,7 @@ impl DataSetConfig {
     /// - `language` - Desired language for data representation
     ///     - Possible values: "en", "ja"
     ///     - Incorrect values will result in "en"
-    pub fn new(language: String, created_year: u16, ignores: Vec<(String, String)>) -> Self {
+    pub fn new(language: String, created_year: u16) -> Self {
         const LNG_JA: &'static str = "ja";
         const LNG_EN: &'static str = "en";
 

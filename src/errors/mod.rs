@@ -37,6 +37,8 @@ pub enum RustlyzerError {
         val: String,
         row: Option<usize>
     },
+    #[error("Invalid config error for item {config_item}: Got value: {val}, expected \
+    one of {:?}", .expected_values)]
     InvalidConfigError {
         config_item: String,
         val: String,
