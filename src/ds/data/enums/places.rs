@@ -114,7 +114,7 @@ pub enum Prefecture {
     Yamanashi,
 }
 
-impl EnumAttrs<Region> for Region {
+impl EnumAttrs for Region {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
             Language::Ja => match self {
@@ -218,7 +218,7 @@ impl Region{
     }
 }
 
-impl EnumAttrs<Prefecture> for Prefecture {
+impl EnumAttrs for Prefecture {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
             Language::Ja => match self {

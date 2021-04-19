@@ -17,7 +17,7 @@ pub enum PurchaseStatus {
     Evaluated
 }
 
-impl EnumAttrs<PurchaseStatus> for PurchaseStatus {
+impl EnumAttrs for PurchaseStatus {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
             Language::En => match self {
@@ -59,7 +59,7 @@ pub enum Gender {
     Female,
 }
 
-impl EnumAttrs<Gender> for Gender {
+impl EnumAttrs for Gender {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
             Language::Ja => {
@@ -101,7 +101,7 @@ pub enum MaritalStatus {
     Married,
 }
 
-impl EnumAttrs<MaritalStatus> for MaritalStatus {
+impl EnumAttrs for MaritalStatus {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
             Language::Ja => {
@@ -164,7 +164,7 @@ pub enum Job {
     Others
 }
 
-impl EnumAttrs<Job> for Job {
+impl EnumAttrs for Job {
     // fn get_all_string(lng: Language) -> Vec<String> {
     //     Job::get_all().into_iter().map(|x| x.as_str(lng).to_string()).collect()
     // }
@@ -239,7 +239,7 @@ pub enum AgeRange1060 {
     Above60s
 }
 
-impl EnumAttrs<AgeRange1060> for AgeRange1060 {
+impl EnumAttrs for AgeRange1060 {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
             Language::En => match self {
@@ -292,7 +292,7 @@ pub enum AgeRange1070 {
     Above70s
 }
 
-impl EnumAttrs<AgeRange1070> for AgeRange1070 {
+impl EnumAttrs for AgeRange1070 {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
             Language::En => match self {
@@ -347,7 +347,7 @@ pub enum ChildrenRange {
     Above4
 }
 
-impl EnumAttrs<ChildrenRange> for ChildrenRange {
+impl EnumAttrs for ChildrenRange {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
             Language::En => match self {
@@ -405,7 +405,7 @@ pub enum YearlyIncomeRange {
     Above20Mil
 }
 
-impl EnumAttrs<YearlyIncomeRange> for YearlyIncomeRange {
+impl EnumAttrs for YearlyIncomeRange {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
             Language::En => match self {

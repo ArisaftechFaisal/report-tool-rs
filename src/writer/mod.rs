@@ -25,7 +25,7 @@ pub fn create_output_file(
     File::open(meta_path)?.read_to_string(&mut meta)?;
     File::open(input_path)?.read_to_string(&mut data)?;
     let temp_file_name = format!("{}.xlsx", Utc::now().format("%Y%m%d_%H%M%S%f").to_string());
-    let config = DataSetConfig::new(lng.to_string(), created_year);
+    let config = DataSetConfig::new(lng.to_string(), created_year)?;
 
     let dataset = DataSet::from_data(meta.as_ref(), config, data.as_ref())?;
     let io_read_time = io_read_time.elapsed().as_millis();

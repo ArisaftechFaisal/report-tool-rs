@@ -56,7 +56,7 @@ impl ExtractFromStr<usize> for usize {
     }
 }
 
-pub trait EnumAttrs<T: EnumAttrs<T> + Sized>: Clone
+pub trait EnumAttrs: Sized + Clone
 {
     fn as_str(&self, lng: Language) -> &'static str;
     fn get_all() -> Vec<Self>;
@@ -86,7 +86,7 @@ pub trait EnumAttrs<T: EnumAttrs<T> + Sized>: Clone
                 return Ok(variant.to_owned());
             }
         }
-        Err(RustlyzerError::InvalidConfigError {
+        Err(RustlyzerError::InvalidConfigValError {
             config_item: Self::display_name_of_enum(lng),
             val: name.to_string(),
             expected_values: Self::get_all_display_names(lng)

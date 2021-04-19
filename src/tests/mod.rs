@@ -63,5 +63,5 @@ fn get_test_ds() -> DataSet {
 
     let config = DataSetConfig::new(String::from("ja"), 2020u16);
 
-    DataSet::from_data(meta.as_ref(), config, data.as_ref()).unwrap()
+    DataSet::from_data(meta.as_ref(), config.unwrap(), data.as_ref()).unwrap()
 }
