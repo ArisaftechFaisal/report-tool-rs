@@ -1,4 +1,3 @@
-use super::places::{Prefecture, Region};
 use super::{FieldType, ComputedFieldType, Language};
 use crate::errors::RustlyzerError;
 use crate::helpers::Round;
@@ -16,6 +15,7 @@ pub mod computed;
 pub mod input_record;
 pub mod enums;
 
+use enums::{Prefecture, Region};
 use input_record::InputRecord;
 
 #[derive(Serialize, Deserialize, Debug)]

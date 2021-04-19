@@ -1,13 +1,16 @@
+pub mod places;
+
+pub use places::{Prefecture, Region};
 use super::Language;
 use crate::helpers::EnumAttrs;
 use serde::{Serialize, Deserialize};
+use crate::ds::data::enums::PurchaseStatus::{Purchased, Rejected, Evaluated};
+use crate::errors::RustlyzerError;
 
-#[derive(Serialize, Deserialize, Debug)]
-pub(crate) enum PurchaseStatus {
+#[derive(Serialize, Deserialize, Debug, Copy, Clone)]
+pub enum PurchaseStatus {
     #[serde(rename = "purchased")]
     Purchased,
-    // #[serde(rename = "not purchased")]
-    // NotPurchased,
     #[serde(rename = "rejected")]
     Rejected,
     #[serde(rename = "evaluated")]
@@ -17,12 +20,15 @@ pub(crate) enum PurchaseStatus {
 impl EnumAttrs<PurchaseStatus> for PurchaseStatus {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
-            _ => {
-                match self {
+            Language::En => match self {
                     PurchaseStatus::Purchased => "Purchased",
                     PurchaseStatus::Rejected => "Rejected",
                     PurchaseStatus::Evaluated => "Evaluated"
-                }
+                },
+            Language::Ja => match self {
+                PurchaseStatus::Purchased => "購入済み",
+                PurchaseStatus::Rejected => "拒否済み",
+                PurchaseStatus::Evaluated => "評価済み"
             }
         }
     }
@@ -34,11 +40,20 @@ impl EnumAttrs<PurchaseStatus> for PurchaseStatus {
             PurchaseStatus::Evaluated
         ]
     }
+
+    fn display_name_of_enum(lng: Language) -> String {
+        let res = match lng {
+            Language::En => "PurchaseStatus",
+            Language::Ja => "購入ステータス"
+        };
+        res.into_string()
+    }
+
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub(crate) enum Gender {
-    #[serde(alias = "male", alias = "男")]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Copy, Clone)]
+pub enum Gender {
+    #[serde(rename = "male", alias = "男")]
     Male,
     #[serde(rename = "female", alias = "女")]
     Female,
@@ -53,7 +68,7 @@ impl EnumAttrs<Gender> for Gender {
                     Gender::Female => "女性"
                 }
             }
-            Language::En | _ => {
+            Language::En => {
                 match self {
                     Gender::Male => "Male",
                     Gender::Female => "Female"
@@ -68,10 +83,18 @@ impl EnumAttrs<Gender> for Gender {
             Gender::Male
         ]
     }
+
+    fn display_name_of_enum(lng: Language) -> String {
+        let res = match lng {
+            Language::En => "Gender",
+            Language::Ja => "性別"
+        };
+        res.to_string()
+    }
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub(crate) enum MaritalStatus {
+#[derive(Serialize, Deserialize, Debug, PartialEq, Copy, Clone)]
+pub enum MaritalStatus {
     #[serde(alias = "single", alias = "未婚")]
     Single,
     #[serde(alias = "married", alias = "既婚")]
@@ -102,10 +125,19 @@ impl EnumAttrs<MaritalStatus> for MaritalStatus {
             MaritalStatus::Single
         ]
     }
+
+    fn display_name_of_enum(lng: Language) -> String {
+        let res = match lng {
+            Language::En => "Marital Status",
+            Language::Ja => "配偶者の有無"
+        };
+        res.to_string()
+    }
+
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub(crate) enum Job {
+#[derive(Serialize, Deserialize, Debug, PartialEq, Copy, Clone)]
+pub enum Job {
     #[serde(rename="専業主婦（主夫）")]
     FullTimeHousewife,
     #[serde(rename="パート・アルバイト")]
@@ -156,7 +188,21 @@ impl EnumAttrs<Job> for Job {
 
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
-            _ => match self {
+            Language::En => match self {
+              Job::FullTimeHousewife => "Full-time Housewife",
+                Job::PartTime => "Part-time",
+                Job::EmployeeOffice => "Employee (Office)",
+                Job::EmployeeOthers => "Employee (Others)",
+                Job::EmployeeTech => "Employee (Tech)",
+                Job::Unemployed => "Unemployed",
+                Job::Student => "Student",
+                Job::SelfEmployed => "Self-employed",
+                Job::Freelancer => "Freelancer",
+                Job::CivilServant => "Civil Servant",
+                Job::Entrepreneur => "Entrepreneur",
+                Job::Others => "Others",
+            },
+            Language::Ja => match self {
                 Job::FullTimeHousewife => "専業主婦（主夫）",
                 Job::PartTime => "パート・アルバイト",
                 Job::EmployeeOffice => "会社員（事務系）",
@@ -172,9 +218,18 @@ impl EnumAttrs<Job> for Job {
             }
         }
     }
+
+    fn display_name_of_enum(lng: Language) -> String {
+        let res = match lng {
+            Language::En => "Job",
+            Language::Ja => "仕事",
+        };
+        res.to_string()
+    }
 }
 
 // Extra enums
+#[derive(Debug, Copy, Clone)]
 pub enum AgeRange1060 {
     Under10s,
     Group20s,
@@ -187,15 +242,21 @@ pub enum AgeRange1060 {
 impl EnumAttrs<AgeRange1060> for AgeRange1060 {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
-            _ => {
-                match self {
-                    AgeRange1060::Under10s => "10代以下",
-                    AgeRange1060::Group20s => "20代",
-                    AgeRange1060::Group30s => "30代",
-                    AgeRange1060::Group40s => "40代",
-                    AgeRange1060::Group50s => "50代",
-                    AgeRange1060::Above60s => "60代以上",
-                }
+            Language::En => match self {
+                AgeRange1060::Under10s => "10s or under",
+                AgeRange1060::Group20s => "20s",
+                AgeRange1060::Group30s => "30s",
+                AgeRange1060::Group40s => "40s",
+                AgeRange1060::Group50s => "50s",
+                AgeRange1060::Above60s => "60s or above",
+            },
+            Language::Ja => match self {
+                AgeRange1060::Under10s => "10代以下",
+                AgeRange1060::Group20s => "20代",
+                AgeRange1060::Group30s => "30代",
+                AgeRange1060::Group40s => "40代",
+                AgeRange1060::Group50s => "50代",
+                AgeRange1060::Above60s => "60代以上",
             }
         }
     }
@@ -210,8 +271,17 @@ impl EnumAttrs<AgeRange1060> for AgeRange1060 {
             AgeRange1060::Above60s,
         ]
     }
+
+    fn display_name_of_enum(lng: Language) -> String {
+        let res = match lng {
+            Language::En => "Age Range 1060",
+            Language::Ja => "年代1060",
+        };
+        res.to_string()
+    }
 }
 
+#[derive(Debug, Copy, Clone)]
 pub enum AgeRange1070 {
     Under10s,
     Group20s,
@@ -225,16 +295,24 @@ pub enum AgeRange1070 {
 impl EnumAttrs<AgeRange1070> for AgeRange1070 {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
-            _ => {
-                match self {
-                    AgeRange1070::Under10s => "10代以下",
-                    AgeRange1070::Group20s => "20代",
-                    AgeRange1070::Group30s => "30代",
-                    AgeRange1070::Group40s => "40代",
-                    AgeRange1070::Group50s => "50代",
-                    AgeRange1070::Group60s => "60代",
-                    AgeRange1070::Above70s => "70代以上",
-                }
+            Language::En => match self {
+                AgeRange1070::Under10s => "10s or under",
+                AgeRange1070::Group20s => "20s",
+                AgeRange1070::Group30s => "30s",
+                AgeRange1070::Group40s => "40s",
+                AgeRange1070::Group50s => "50s",
+                AgeRange1070::Group60s => "60s",
+                AgeRange1070::Above70s => "70s or above",
+
+            },
+            Language::Ja => match self {
+                AgeRange1070::Under10s => "10代以下",
+                AgeRange1070::Group20s => "20代",
+                AgeRange1070::Group30s => "30代",
+                AgeRange1070::Group40s => "40代",
+                AgeRange1070::Group50s => "50代",
+                AgeRange1070::Group60s => "60代",
+                AgeRange1070::Above70s => "70代以上",
             }
         }
     }
@@ -250,9 +328,18 @@ impl EnumAttrs<AgeRange1070> for AgeRange1070 {
             AgeRange1070::Above70s,
         ]
     }
+
+    fn display_name_of_enum(lng: Language) -> String {
+        let res = match lng {
+            Language::En => "Age Range 1070",
+            Language::Ja => "年代1070",
+        };
+        res.to_string()
+    }
 }
 
-pub(crate) enum ChildrenRange {
+#[derive(Debug, Copy, Clone)]
+pub enum ChildrenRange {
     Group0,
     Group1,
     Group2,
@@ -263,7 +350,15 @@ pub(crate) enum ChildrenRange {
 impl EnumAttrs<ChildrenRange> for ChildrenRange {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
-            _ => match self {
+            Language::En => match self {
+                ChildrenRange::Group0 => "0",
+                ChildrenRange::Group1 => "1",
+                ChildrenRange::Group2 => "2",
+                ChildrenRange::Group3 => "3",
+                ChildrenRange::Above4 => "4 or above",
+
+            },
+            Language::Ja => match self {
                 ChildrenRange::Group0 => "0人",
                 ChildrenRange::Group1 => "1人",
                 ChildrenRange::Group2 => "2人",
@@ -282,9 +377,17 @@ impl EnumAttrs<ChildrenRange> for ChildrenRange {
             ChildrenRange::Above4,
         ]
     }
+
+    fn display_name_of_enum(lng: Language) -> String {
+        let res = match lng {
+            Language::En => "Children",
+            Language::Ja => "子供数",
+        }
+    }
 }
 
-pub(crate) enum YearlyIncomeRange {
+#[derive(Debug, Copy, Clone)]
+pub enum YearlyIncomeRange {
     Below1Mil,
     Group1To2Mil,
     Group2To3Mil,
@@ -304,7 +407,24 @@ pub(crate) enum YearlyIncomeRange {
 impl EnumAttrs<YearlyIncomeRange> for YearlyIncomeRange {
     fn as_str(&self, lng: Language) -> &'static str {
         match lng {
-            _ => match self {
+            Language::En => match self {
+                YearlyIncomeRange::Below1Mil => "Below 1 million yen",
+                YearlyIncomeRange::Group1To2Mil => "1~2 million yen",
+                YearlyIncomeRange::Group2To3Mil => "2~3 million yen",
+                YearlyIncomeRange::Group3To4Mil => "3~4 million yen",
+                YearlyIncomeRange::Group4To5Mil => "4~5 million yen",
+                YearlyIncomeRange::Group5To6Mil => "5~6 million yen",
+                YearlyIncomeRange::Group6To7Mil => "6~7 million yen",
+                YearlyIncomeRange::Group7To8Mil => "7~8 million yen",
+                YearlyIncomeRange::Group8To9Mil => "8~9 million yen",
+                YearlyIncomeRange::Group9To10Mil => "9~10 million yen",
+                YearlyIncomeRange::Group10To12Mil => "10~12 million yen",
+                YearlyIncomeRange::Group12To15Mil => "12~15 million yen",
+                YearlyIncomeRange::Group15To20Mil => "15~20 million yen",
+                YearlyIncomeRange::Above20Mil => "20 million yen or above",
+
+            },
+            Language::Ja => match self {
                 YearlyIncomeRange::Below1Mil => "100万円未満",
                 YearlyIncomeRange::Group1To2Mil => "100～200万円未満",
                 YearlyIncomeRange::Group2To3Mil => "200～300万円未満",
@@ -340,5 +460,13 @@ impl EnumAttrs<YearlyIncomeRange> for YearlyIncomeRange {
             YearlyIncomeRange::Group15To20Mil,
             YearlyIncomeRange::Above20Mil
         ]
+    }
+
+    fn display_name_of_enum(lng: Language) -> String {
+        let res = match lng {
+            Language::En => "Yearly Income Range",
+            Language::Ja => "年間収入の範囲"
+        };
+        res.to_string()
     }
 }

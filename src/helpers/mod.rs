@@ -1,4 +1,6 @@
 use crate::ds::Language;
+use std::fmt::Debug;
+use crate::errors::RustlyzerError;
 
 pub trait CustomHelpers<T> {
     fn below_half(&self, exp: u8) -> bool;
@@ -54,10 +56,10 @@ impl ExtractFromStr<usize> for usize {
     }
 }
 
-pub trait EnumAttrs<T: EnumAttrs<T> + Sized>
+pub trait EnumAttrs<T: EnumAttrs<T> + Sized>: Clone
 {
     fn as_str(&self, lng: Language) -> &'static str;
-    fn get_all() -> Vec<T>;
+    fn get_all() -> Vec<Self>;
     fn get_all_str(lng: Language) -> Vec<&'static str> {
         Self::get_all().into_iter().map(|x| x.as_str(lng)).collect()
     }
@@ -66,5 +68,28 @@ pub trait EnumAttrs<T: EnumAttrs<T> + Sized>
     }
     fn get_all_string(lng: Language) -> Vec<String> {
         Self::get_all().into_iter().map(|x| x.as_string(lng)).collect()
+    }
+
+    fn display_name_of_enum(lng: Language) -> String;
+    fn display_name(&self, lng: Language) -> String {
+        self.as_string()
+    }
+
+    fn get_all_display_names(lng: Language) -> Vec<String> {
+        let all: Vec<Self> = Self::get_all();
+        all.into_iter().map(|this| this.display_name(lng)).collect::<Vec<String>>()
+    }
+    fn from_display_name(name: &str, lng: Language) -> Result<Self, RustlyzerError> {
+       let all_names = Self::get_all_display_names(lng);
+        for display_name in all_name.iter() {
+            if display_name.as_str() == name {
+                return Ok(this.to_owned());
+            }
+        };
+        Err(RustlyzerError::InvalidConfigError {
+            config_item: Self::display_name_of_enum(),
+            val: name.to_string(),
+            expected_values: all_names
+        })
     }
 }

@@ -9,7 +9,6 @@ pub mod config;
 pub mod data;
 pub mod field;
 pub mod meta;
-pub mod places;
 pub mod table;
 
 pub use config::{DataSetConfig, Language};

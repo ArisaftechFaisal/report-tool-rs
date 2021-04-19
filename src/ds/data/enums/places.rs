@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::fmt;
 use crate::helpers::EnumAttrs;
 
-#[derive(Debug, PartialOrd, PartialEq)]
+#[derive(Debug, PartialOrd, PartialEq, Copy, Clone)]
 pub enum Region {
     Hokkaido,
     Tohoku,
@@ -16,7 +16,7 @@ pub enum Region {
     Kyushu,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub enum Prefecture {
     #[serde(rename = "愛知県")]
     Aichi,
@@ -127,7 +127,7 @@ impl EnumAttrs<Region> for Region {
                 Region::Shikoku => "四国",
                 Region::Kyushu => "九州",
             },
-            _ => match self {
+            Language::En => match self {
                 Region::Hokkaido => "Hokkaido",
                 Region::Tohoku => "Tohoku",
                 Region::Kanto => "Kanto",
@@ -151,6 +151,14 @@ impl EnumAttrs<Region> for Region {
             Region::Hokkaido,
             Region::Shikoku,
         ]
+    }
+
+    fn display_name_of_enum(lng: Language) -> String {
+        let res = match lng {
+            Language::En => "Region",
+            Language::Ja => "地域",
+        };
+        res.to_string()
     }
     // fn get_all_string(lng: Language) -> Vec<String> {
     //     Region::get_all().into_iter().map(|x| x.as_str(lng)).collect()
@@ -262,7 +270,7 @@ impl Prefecture {
                 Prefecture::Yamaguchi => "山口県".to_owned(),
                 Prefecture::Yamanashi => "山梨県".to_owned(),
             },
-            _ => match self {
+            Language::En => match self {
                 Prefecture::Aichi => "Aichi".to_owned(),
                 Prefecture::Akita => "Akita".to_owned(),
                 Prefecture::Aomori => "Aomori".to_owned(),

@@ -36,6 +36,11 @@ pub enum RustlyzerError {
         field: String,
         val: String,
         row: Option<usize>
+    },
+    InvalidConfigError {
+        config_item: String,
+        val: String,
+        expected_values: Vec<String>
     }
 }
 
