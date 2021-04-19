@@ -9,7 +9,7 @@ pub mod field;
 pub mod meta;
 pub mod places;
 pub mod table;
-use data::{Data, InputRecord};
+use data::{Data, input_record::InputRecord};
 use field::FieldType;
 use meta::{CustomFieldVariant, Meta};
 use table::{Column, Header, Table};
