@@ -138,6 +138,7 @@ pub enum IgnoreCriteria {
 
 // Constants API
 #[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all="camelCase")]
 pub struct IgnoreCriteriaItem {
     pub enum_name: String,
     pub variants: Vec<String>,
