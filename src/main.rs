@@ -19,7 +19,7 @@ fn main() {
 
     match writer::create_output_file(&path_meta, &path_input, output_path, &lng, created_year, ignores)
     {
-        Ok(res) => println!("{:?}", res),
+        Ok(res) => (),//println!("{:?}", res),
         Err(e) => {
             // println!("{:?}", e);
             println!("{}", e.to_string());

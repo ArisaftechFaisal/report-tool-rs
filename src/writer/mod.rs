@@ -15,14 +15,15 @@ pub fn create_output_file(
     created_year: u16,
     ignores: Vec<(String, String)>
 
-) -> Result<(), RustlyzerError> {
+) -> Result<u128, RustlyzerError> {
+    let total_time = std::time::Instant::now();
     let input_path = Path::new(input_path);
     let meta_path = Path::new(meta_path);
     let output_path =  Path::new(output_path);
-    let io_read_time = std::time::Instant::now();
     let mut meta = String::new();
     let mut data = String::new();
 
+    let io_read_time = std::time::Instant::now();
     File::open(meta_path)?.read_to_string(&mut meta)?;
     File::open(input_path)?.read_to_string(&mut data)?;
     let temp_file_name = format!("{}.xlsx", Utc::now().format("%Y%m%d_%H%M%S%f").to_string());
@@ -30,6 +31,7 @@ pub fn create_output_file(
 
     let dataset = DataSet::from_data(meta.as_ref(), config, data.as_ref())?;
     let io_read_time = io_read_time.elapsed().as_millis();
+
     println!("IO read time is {} milliseconds", io_read_time);
     println!("Loading done!");
     let workbook = Workbook::new(&temp_file_name);
@@ -381,9 +383,11 @@ pub fn create_output_file(
     clean_file_or_current_dir(Some(&temp_file_name));
     println!("Deleted temp file.");
 
-    println!("Done! Xlsx file created.");
+    let total_time = total_time.elapsed().as_millis();
+    println!("Done! Xlsx file created");
+    println!("Total process took {:?} milliseconds", total_time);
     // Ok(format!("./{}", output_name))
-    Ok(())
+    Ok(total_time)
 
 }
 
