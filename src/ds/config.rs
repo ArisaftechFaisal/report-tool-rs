@@ -28,7 +28,7 @@ impl DataSetConfig {
     ///     - Input data cannot have birthdate after the created_year
     /// - `ignores` - Data to be ignored
     ///     - Formatted as a list of tuples
-    ///     - Possible values: [("PurchaseStatus", "evaluated")]
+    ///     - Possible values: [("purchase-status", "evaluated")]
     pub fn new_with_ignores(language: String, created_year: u16, ignores: Vec<(String, String)>) ->
                                                                                      Result<Self,
         RustlyzerError> {

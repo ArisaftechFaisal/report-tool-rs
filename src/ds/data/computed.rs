@@ -556,7 +556,7 @@ impl Data {
                     }
                 }
                 let time = time.elapsed().as_millis();
-                println!("Custom field map for {:?}: {}", field, time);
+                // println!("Custom field map for {:?}: {}", field, time);
                 Ok(map)
             },
             _ => panic!("Called get_custom_field_map on non-custom-computed field.")

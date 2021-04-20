@@ -376,9 +376,10 @@ pub fn create_output_file(
     workbook.close()?;
 
     let temp_file_path = std::env::current_dir()?.join(&temp_file_name);
-    println!("{:?}", temp_file_path);
+    println!("Created temp file: {:?}", temp_file_path);
     std::fs::copy(temp_file_path, output_path)?;
     clean_file_or_current_dir(Some(&temp_file_name));
+    println!("Deleted temp file.");
 
     println!("Done! Xlsx file created.");
     // Ok(format!("./{}", output_name))
