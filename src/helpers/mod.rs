@@ -1,4 +1,7 @@
 use crate::ds::Language;
+use std::fmt::Debug;
+use crate::errors::RustlyzerError;
+use convert_case::{Casing, Case};
 
 pub trait CustomHelpers<T> {
     fn below_half(&self, exp: u8) -> bool;
@@ -54,10 +57,10 @@ impl ExtractFromStr<usize> for usize {
     }
 }
 
-pub trait EnumAttrs<T: EnumAttrs<T> + Sized>
+pub trait EnumAttrs: Sized + Clone
 {
     fn as_str(&self, lng: Language) -> &'static str;
-    fn get_all() -> Vec<T>;
+    fn get_all() -> Vec<Self>;
     fn get_all_str(lng: Language) -> Vec<&'static str> {
         Self::get_all().into_iter().map(|x| x.as_str(lng)).collect()
     }
@@ -66,5 +69,31 @@ pub trait EnumAttrs<T: EnumAttrs<T> + Sized>
     }
     fn get_all_string(lng: Language) -> Vec<String> {
         Self::get_all().into_iter().map(|x| x.as_string(lng)).collect()
+    }
+
+    fn display_name_of_enum(lng: Language) -> String;
+    fn id_name_of_enum() -> String {
+        Self::display_name_of_enum(Language::En).to_case(Case::Kebab)
+    }
+    fn display_name(&self, lng: Language) -> String {
+        self.as_string(lng)
+    }
+
+    fn get_all_display_names(lng: Language) -> Vec<String> {
+        let all: Vec<Self> = Self::get_all();
+        all.into_iter().map(|this| this.display_name(lng)).collect::<Vec<String>>()
+    }
+    fn from_display_name(name: &str, lng: Language) -> Result<Self, RustlyzerError> {
+       let all = Self::get_all();
+        for variant in all.iter() {
+            if variant.display_name(lng).as_str() == name {
+                return Ok(variant.to_owned());
+            }
+        }
+        Err(RustlyzerError::InvalidConfigValError {
+            config_item: Self::display_name_of_enum(lng),
+            val: name.to_string(),
+            expected_values: Self::get_all_display_names(lng)
+        })
     }
 }

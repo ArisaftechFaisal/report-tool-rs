@@ -3,7 +3,7 @@ use super::*;
 #[test]
 fn data_length() {
     let ds = get_test_ds();
-    assert_eq!(ds.data.records.len(), 3100);
+    assert_eq!(ds.data.records.len(), 300);
 }
 
 #[test]

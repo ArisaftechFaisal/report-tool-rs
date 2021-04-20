@@ -1,10 +1,11 @@
-use super::{Data, FieldType, ComputedFieldType, Job, Region, MaritalStatus, Gender, Language};
+use super::{InputRecord, Data, FieldType,
+            ComputedFieldType, Region, Language};
+use super::enums::{AgeRange1060, YearlyIncomeRange, ChildrenRange, Job, MaritalStatus, Gender };
 use hashbrown::HashMap;
-use crate::ds::meta::{Meta, CustomFieldVariant};
+use super::{Meta, CustomFieldVariant};
 use crate::errors::RustlyzerError;
 use serde_json::Value;
 use indexmap::map::IndexMap;
-use crate::ds::data::{AgeRange1060, YearlyIncomeRange, ChildrenRange, InputRecord};
 use crate::helpers::EnumAttrs;
 use std::ptr::null;
 

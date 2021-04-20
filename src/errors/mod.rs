@@ -36,7 +36,16 @@ pub enum RustlyzerError {
         field: String,
         val: String,
         row: Option<usize>
-    }
+    },
+    #[error("Invalid config error for item {config_item}: Got value: {val}, expected \
+    one of {:?}", .expected_values)]
+    InvalidConfigValError {
+        config_item: String,
+        val: String,
+        expected_values: Vec<String>
+    },
+    #[error("Invalid config item: {0}")]
+    InvalidConfigItemError(String)
 }
 
 impl From<csv::Error> for RustlyzerError {

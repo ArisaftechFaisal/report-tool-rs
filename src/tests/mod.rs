@@ -7,11 +7,6 @@ use std::io::*;
 mod ds_test;
 mod static_fields_test;
 mod table_test;
-#[test]
-fn sum_as_string_test() {
-    assert_eq!(some_sample::sum_as_string(2, 2), "4");
-}
-
 // Helpers
 fn test_static_field_str(ind: usize, field: FieldType, expected: &'static str) {
     let ds = get_test_ds();
@@ -51,8 +46,8 @@ fn get_fkc_static_fields() -> [FieldType; 11] {
 
 fn get_test_ds() -> DataSet {
     const DATA_PATH: &'static str = "./src/tests/";
-    let path_meta = format!("{}{}", DATA_PATH, "meta.json");
-    let path_data = format!("{}{}", DATA_PATH, "input.csv");
+    let path_meta = format!("{}{}", DATA_PATH, "meta_test.json");
+    let path_data = format!("{}{}", DATA_PATH, "input_test.csv");
 
     let mut meta = String::new();
     let mut data = String::new();
@@ -68,5 +63,5 @@ fn get_test_ds() -> DataSet {
 
     let config = DataSetConfig::new(String::from("ja"), 2020u16);
 
-    DataSet::from_data(meta.as_ref(), config, data.as_ref()).unwrap()
+    DataSet::from_data(meta.as_ref(), config.unwrap(), data.as_ref()).unwrap()
 }

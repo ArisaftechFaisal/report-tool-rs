@@ -10,7 +10,7 @@ fn fkc_column_count_correct() {
 fn fkc_row_count_correct() {
     let fkc_table = get_test_ds().get_fkc_raw_table().unwrap();
     for col in fkc_table.cols.iter() {
-        assert_eq!(col.contents.len(), 3100);
+        assert_eq!(col.contents.len(), 300);
     }
 }
 
