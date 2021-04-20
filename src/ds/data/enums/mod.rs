@@ -7,7 +7,7 @@ use serde::{Serialize, Deserialize};
 use crate::ds::data::enums::PurchaseStatus::{Purchased, Rejected, Evaluated};
 use crate::errors::RustlyzerError;
 
-#[derive(Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, PartialEq)]
 pub enum PurchaseStatus {
     #[serde(rename = "purchased")]
     Purchased,
@@ -43,7 +43,7 @@ impl EnumAttrs for PurchaseStatus {
 
     fn display_name_of_enum(lng: Language) -> String {
         let res = match lng {
-            Language::En => "PurchaseStatus",
+            Language::En => "Purchase Status",
             Language::Ja => "購入ステータス"
         };
         res.to_string()
@@ -229,7 +229,7 @@ impl EnumAttrs for Job {
 }
 
 // Extra enums
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialOrd, PartialEq)]
 pub enum AgeRange1060 {
     Under10s,
     Group20s,
@@ -281,7 +281,7 @@ impl EnumAttrs for AgeRange1060 {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub enum AgeRange1070 {
     Under10s,
     Group20s,
@@ -338,7 +338,7 @@ impl EnumAttrs for AgeRange1070 {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub enum ChildrenRange {
     Group0,
     Group1,
@@ -387,7 +387,7 @@ impl EnumAttrs for ChildrenRange {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub enum YearlyIncomeRange {
     Below1Mil,
     Group1To2Mil,

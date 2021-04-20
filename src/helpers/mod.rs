@@ -1,6 +1,7 @@
 use crate::ds::Language;
 use std::fmt::Debug;
 use crate::errors::RustlyzerError;
+use convert_case::{Casing, Case};
 
 pub trait CustomHelpers<T> {
     fn below_half(&self, exp: u8) -> bool;
@@ -71,6 +72,9 @@ pub trait EnumAttrs: Sized + Clone
     }
 
     fn display_name_of_enum(lng: Language) -> String;
+    fn id_name_of_enum() -> String {
+        Self::display_name_of_enum(Language::En).to_case(Case::Kebab)
+    }
     fn display_name(&self, lng: Language) -> String {
         self.as_string(lng)
     }

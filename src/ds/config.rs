@@ -6,6 +6,8 @@ use crate::helpers::EnumAttrs;
 use crate::ds::field::FieldType::{YearlyIncome, Age};
 use crate::ds::data::enums::PurchaseStatus::Purchased;
 use crate::errors::RustlyzerError;
+use std::hash::Hash;
+use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Clone)]
 pub struct DataSetConfig {
@@ -52,36 +54,36 @@ impl DataSetConfig {
        let mut ignores = Vec::<IgnoreCriteria>::new();
         for (cat, val) in tups.into_iter() {
             match cat {
-                p if p == PurchaseStatus::display_name_of_enum(Language::En) => {
-                    ignores.push(IgnoreCriteria::PurchaseStatus
+                p if p == PurchaseStatus::id_name_of_enum() => {
+                    ignores.push(IgnoreCriteria::PurchaseStatusIgnore
                         (PurchaseStatus::from_display_name(val.as_str(), lng)?));
                 },
-                m if m == MaritalStatus::display_name_of_enum(Language::En) => {
-                    ignores.push(IgnoreCriteria::MaritalStatus
+                m if m == MaritalStatus::id_name_of_enum() => {
+                    ignores.push(IgnoreCriteria::MaritalStatusIgnore
                         (MaritalStatus::from_display_name(val.as_str(), lng)?));
                 },
-                g if g == Gender::display_name_of_enum(Language::En) => {
-                    ignores.push(IgnoreCriteria::Gender
+                g if g == Gender::id_name_of_enum() => {
+                    ignores.push(IgnoreCriteria::GenderIgnore
                         (Gender::from_display_name(val.as_str(), lng)?));
                 },
-                c if c == ChildrenRange::display_name_of_enum(Language::En) => {
-                    ignores.push(IgnoreCriteria::ChildrenRange
+                c if c == ChildrenRange::id_name_of_enum() => {
+                    ignores.push(IgnoreCriteria::ChildrenRangeIgnore
                         (ChildrenRange::from_display_name(val.as_str(), lng)?))
                 },
-                j if j == Job::display_name_of_enum(Language::En) => {
-                    ignores.push(IgnoreCriteria::Job
+                j if j == Job::id_name_of_enum() => {
+                    ignores.push(IgnoreCriteria::JobIgnore
                         (Job::from_display_name(val.as_str(), lng)?));
                 },
-                a if a == AgeRange1070::display_name_of_enum(Language::En) => {
-                    ignores.push(IgnoreCriteria::AgeRange1070
+                a if a == AgeRange1070::id_name_of_enum() => {
+                    ignores.push(IgnoreCriteria::AgeRange1070Ignore
                         (AgeRange1070::from_display_name(val.as_str(), lng)?));
                 },
-                y if y == YearlyIncomeRange::display_name_of_enum(Language::En) => {
-                    ignores.push(IgnoreCriteria::YearlyIncomeRange
+                y if y == YearlyIncomeRange::id_name_of_enum() => {
+                    ignores.push(IgnoreCriteria::YearlyIncomeRangeIgnore
                         (YearlyIncomeRange::from_display_name(val.as_str(), lng)?));
                 },
-                pr if pr == Prefecture::display_name_of_enum(Language::En) => {
-                    ignores.push(IgnoreCriteria::Prefecture
+                pr if pr == Prefecture::id_name_of_enum() => {
+                    ignores.push(IgnoreCriteria::PrefectureIgnore
                         (Prefecture::from_display_name(val.as_str(), lng)?));
                 },
                 x => {
@@ -124,17 +126,18 @@ impl EnumAttrs for Language {
 
 #[derive(Debug, Copy, Clone)]
 pub enum IgnoreCriteria {
-    PurchaseStatus(PurchaseStatus),
-    MaritalStatus(MaritalStatus),
-    Gender(Gender),
-    ChildrenRange(ChildrenRange),
-    Job(Job),
-    AgeRange1070(AgeRange1070),
-    YearlyIncomeRange(YearlyIncomeRange),
-    Prefecture(Prefecture)
+    PurchaseStatusIgnore(PurchaseStatus),
+    MaritalStatusIgnore(MaritalStatus),
+    GenderIgnore(Gender),
+    ChildrenRangeIgnore(ChildrenRange),
+    JobIgnore(Job),
+    AgeRange1070Ignore(AgeRange1070),
+    YearlyIncomeRangeIgnore(YearlyIncomeRange),
+    PrefectureIgnore(Prefecture)
 }
 
 // Constants API
+#[derive(Debug, Deserialize, Serialize)]
 pub struct IgnoreCriteriaItem {
     pub enum_name: String,
     pub variants: Vec<String>,
@@ -145,10 +148,10 @@ impl IgnoreCriteriaItem {
         IgnoreCriteriaItem {enum_name, variants }
     }
 }
-pub fn provide_ignore_criteria_constants() {
+pub fn provide_ignore_criteria_constants() -> Vec<(String, HashMap<String, IgnoreCriteriaItem>)>{
     const lngs: [Language;2] = [Language::En, Language::Ja];
-    let mut available_ignore_criteria_items = HashMap::<String, HashMap<String,
-        IgnoreCriteriaItem>>::new();
+    let mut available_ignore_criteria_items = Vec::<(String, HashMap<String,
+        IgnoreCriteriaItem>)>::new();
     // Purchase Status
     let mut en_map = HashMap::<String, IgnoreCriteriaItem>::new();
     for &lng in lngs.iter() {
@@ -160,9 +163,8 @@ pub fn provide_ignore_criteria_constants() {
             )
         );
     }
-    available_ignore_criteria_items.insert(
-        PurchaseStatus::display_name_of_enum(Language::En),
-        en_map
+    available_ignore_criteria_items.push(
+        ( PurchaseStatus::id_name_of_enum(), en_map )
     );
     // Marital Status
     let mut en_map = HashMap::<String, IgnoreCriteriaItem>::new();
@@ -175,9 +177,8 @@ pub fn provide_ignore_criteria_constants() {
             )
         );
     }
-    available_ignore_criteria_items.insert(
-        MaritalStatus::display_name_of_enum(Language::En),
-        en_map
+    available_ignore_criteria_items.push(
+        (MaritalStatus::id_name_of_enum(), en_map)
     );
     // Gender 
     let mut en_map = HashMap::<String, IgnoreCriteriaItem>::new();
@@ -190,9 +191,8 @@ pub fn provide_ignore_criteria_constants() {
             )
         );
     }
-    available_ignore_criteria_items.insert(
-        Gender::display_name_of_enum(Language::En),
-        en_map
+    available_ignore_criteria_items.push(
+        (Gender::id_name_of_enum(), en_map)
     );
     // Children Range
     let mut en_map = HashMap::<String, IgnoreCriteriaItem>::new();
@@ -205,9 +205,8 @@ pub fn provide_ignore_criteria_constants() {
             )
         );
     }
-    available_ignore_criteria_items.insert(
-        ChildrenRange::display_name_of_enum(Language::En),
-        en_map
+    available_ignore_criteria_items.push(
+        (ChildrenRange::id_name_of_enum(), en_map)
     );
     // Job
     let mut en_map = HashMap::<String, IgnoreCriteriaItem>::new();
@@ -220,9 +219,8 @@ pub fn provide_ignore_criteria_constants() {
             )
         );
     }
-    available_ignore_criteria_items.insert(
-        Job::display_name_of_enum(Language::En),
-        en_map
+    available_ignore_criteria_items.push(
+        (Job::id_name_of_enum(), en_map)
     );
     // Age Range 1070
     let mut en_map = HashMap::<String, IgnoreCriteriaItem>::new();
@@ -235,9 +233,8 @@ pub fn provide_ignore_criteria_constants() {
             )
         );
     }
-    available_ignore_criteria_items.insert(
-        AgeRange1070::display_name_of_enum(Language::En),
-        en_map
+    available_ignore_criteria_items.push(
+        (AgeRange1070::id_name_of_enum(), en_map)
     );
     // Yearly Income
     let mut en_map = HashMap::<String, IgnoreCriteriaItem>::new();
@@ -250,9 +247,8 @@ pub fn provide_ignore_criteria_constants() {
             )
         );
     }
-    available_ignore_criteria_items.insert(
-        YearlyIncomeRange::display_name_of_enum(Language::En),
-        en_map
+    available_ignore_criteria_items.push(
+        (YearlyIncomeRange::id_name_of_enum(), en_map)
     );
     // Prefecture
     let mut en_map = HashMap::<String, IgnoreCriteriaItem>::new();
@@ -265,9 +261,9 @@ pub fn provide_ignore_criteria_constants() {
             )
         );
     }
-    available_ignore_criteria_items.insert(
-        Prefecture::display_name_of_enum(Language::En),
-        en_map
+    available_ignore_criteria_items.push(
+        (Prefecture::id_name_of_enum(), en_map)
     );
+    available_ignore_criteria_items
 }
 

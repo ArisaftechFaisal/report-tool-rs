@@ -15,23 +15,23 @@ pub(crate) struct InputRecord {
     campaign_id: String,
     price: u32,
     bonus_point: u32,
-    status: PurchaseStatus,
+    pub(crate) status: PurchaseStatus,
     created_at: String,
     #[serde(rename = "updated at")]
     updated_at: String,
     email: String,
     nickname: String,
-    pub(super) gender: Gender,
+    pub(crate) gender: Gender,
     birth_year: u16,
     // job: String,
-    pub(super) job: Job,
-    pub(super) prefecture: Prefecture,
-    pub(super) marital_status: MaritalStatus,
-    pub(super) children: u16,
-    pub(super) household_income_min: u64,
-    pub(super) household_income_max: u64,
+    pub(crate) job: Job,
+    pub(crate) prefecture: Prefecture,
+    pub(crate) marital_status: MaritalStatus,
+    pub(crate) children: u16,
+    pub(crate) household_income_min: u64,
+    pub(crate) household_income_max: u64,
     #[serde(flatten, deserialize_with = "custom_fields_de")]
-    pub(super) custom_fields: HashMap<usize, Option<Value>>,
+    pub(crate) custom_fields: HashMap<usize, Option<Value>>,
 }
 
 impl InputRecord {
@@ -78,7 +78,7 @@ impl InputRecord {
         Ok(())
     }
 
-    pub(super) fn get_custom_field_str(
+    pub(crate) fn get_custom_field_str(
         &self,
         field: &FieldType,
         lng: Language,
@@ -91,7 +91,7 @@ impl InputRecord {
         }
     }
 
-    pub(super) fn get_static_field_str(&self, field: &FieldType, lng: Language, created_year: u16) -> String {
+    pub(crate) fn get_static_field_str(&self, field: &FieldType, lng: Language, created_year: u16) -> String {
         match lng {
             _ => match field {
                 FieldType::Id => self.id.clone(),
@@ -151,7 +151,7 @@ impl InputRecord {
         }
     }
 
-    pub(super) fn get_age(&self, created_year: u16) -> u8 {
+    pub(crate) fn get_age(&self, created_year: u16) -> u8 {
         // (Utc::now().year() as u16 - self.birth_year) as u8
         // println!("Birth year: {:?}", self.birth_year);
         let age = (created_year - self.birth_year) as u8;
@@ -171,7 +171,7 @@ impl InputRecord {
         }
     }
 
-    fn get_age_group_1070(&self, created_year: u16) -> AgeRange1070 {
+    pub(crate) fn get_age_group_1070(&self, created_year: u16) -> AgeRange1070 {
         let age = (self.get_age(created_year) / 10) * 10;
         match age {
             0..20 => AgeRange1070::Under10s,
@@ -196,31 +196,34 @@ impl InputRecord {
     }
 
     fn get_income_range_str(&self, lng: Language) -> String {
+        self.get_income_range().as_string(lng)
+    }
+    pub(crate) fn get_income_range(&self) -> YearlyIncomeRange {
         // self.get_income_custom_range_str(lng, 1, 1_000_000)
         match (self.household_income_min, self.household_income_max) {
-            (0..1_000_000, 0..1_000_000) => YearlyIncomeRange::Below1Mil.as_string(lng),
-            (1_000_000..2_000_000, 1_000_000..2_000_000) => YearlyIncomeRange::Group1To2Mil.as_string(lng),
-            (2_000_000..3_000_000, 2_000_000..3_000_000) => YearlyIncomeRange::Group2To3Mil.as_string(lng),
-            (3_000_000..4_000_000, 3_000_000..4_000_000) => YearlyIncomeRange::Group3To4Mil.as_string(lng),
+            (0..1_000_000, 0..1_000_000) => YearlyIncomeRange::Below1Mil,
+            (1_000_000..2_000_000, 1_000_000..2_000_000) => YearlyIncomeRange::Group1To2Mil,
+            (2_000_000..3_000_000, 2_000_000..3_000_000) => YearlyIncomeRange::Group2To3Mil,
+            (3_000_000..4_000_000, 3_000_000..4_000_000) => YearlyIncomeRange::Group3To4Mil,
             (4_000_000..5_000_000, 4_000_000..5_000_000) => YearlyIncomeRange::Group4To5Mil
-                .as_string(lng),
+                ,
             (5_000_000..6_000_000, 5_000_000..6_000_000) => YearlyIncomeRange::Group5To6Mil
-                .as_string(lng),
+                ,
             (6_000_000..7_000_000, 6_000_000..7_000_000) => YearlyIncomeRange::Group6To7Mil
-                .as_string(lng),
+                ,
             (7_000_000..8_000_000, 7_000_000..8_000_000) => YearlyIncomeRange::Group7To8Mil
-                .as_string(lng),
+                ,
             (8_000_000..9_000_000, 8_000_000..9_000_000) => YearlyIncomeRange::Group8To9Mil
-                .as_string(lng),
+                ,
             (9_000_000..10_000_000, 9_000_000..10_000_000) => YearlyIncomeRange::Group9To10Mil
-                .as_string(lng),
+                ,
             (10_000_000..12_000_000, 10_000_000..12_000_000) => YearlyIncomeRange::Group10To12Mil
-                .as_string(lng),
+                ,
             (12_000_000..15_000_000, 12_000_000..15_000_000) => YearlyIncomeRange::Group12To15Mil
-                .as_string(lng),
+                ,
             (15_000_000..20_000_000, 15_000_000..20_000_000) => YearlyIncomeRange::Group15To20Mil
-                .as_string(lng),
-            (_, _ ) => YearlyIncomeRange::Above20Mil.as_string(lng),
+                ,
+            (_, _ ) => YearlyIncomeRange::Above20Mil,
         }
     }
 
@@ -256,12 +259,16 @@ impl InputRecord {
             // Language::Ja => format!("{}人", self.children),
             // _ => format!("{}", self.children),
         // }
+        self.get_children_range().as_string(lng)
+    }
+
+    pub(crate) fn get_children_range(&self) -> ChildrenRange {
         match self.children {
-            0 => ChildrenRange::Group0.as_string(lng),
-            1 => ChildrenRange::Group1.as_string(lng),
-            2 => ChildrenRange::Group2.as_string(lng),
-            3 => ChildrenRange::Group3.as_string(lng),
-            _ => ChildrenRange::Above4.as_string(lng)
+            0 => ChildrenRange::Group0,
+            1 => ChildrenRange::Group1,
+            2 => ChildrenRange::Group2,
+            3 => ChildrenRange::Group3,
+            _ => ChildrenRange::Above4
         }
     }
 

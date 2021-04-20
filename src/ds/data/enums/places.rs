@@ -16,7 +16,7 @@ pub enum Region {
     Kyushu,
 }
 
-#[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialEq)]
 pub enum Prefecture {
     #[serde(rename = "愛知県")]
     Aichi,
