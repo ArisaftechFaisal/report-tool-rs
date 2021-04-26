@@ -1,4 +1,4 @@
-use super::{DataSet, DataSetConfig, IgnoreCriteria};
+use super::{DataSet, DataSetConfig, IncludeCriteria};
 use super::field::{FieldType, ComputedFieldType};
 use super::table::{Column, Header, Table};
 use super::meta::{Meta, CustomFieldVariant, CustomField};
@@ -13,48 +13,54 @@ impl DataSet {
        let mut n_records = Vec::<InputRecord>::with_capacity(data.records.len()/2);
         for (row, mut record) in data.records.into_iter().enumerate() {
            record.validate_birth_year(config.created_year, row)?;
-            let mut would_ignore: bool = false;
+            let mut would_include = true;
             DataSet::validate_meta_data(&mut record, meta, row)?;
-            for &ignore in config.ignores.iter() {
-               match ignore {
-                  IgnoreCriteria::PurchaseStatusIgnore(cond) => if record.status == cond {
-                      would_ignore = true;
-                      break;
-                  },
-                   IgnoreCriteria::MaritalStatusIgnore(cond) => if record.marital_status == cond {
-                       would_ignore = true;
-                       break;
-                   },
-                   IgnoreCriteria::GenderIgnore(cond) => if record.gender == cond {
-                       would_ignore = true;
-                       break;
-                   },
-                   IgnoreCriteria::ChildrenRangeIgnore(cond) => if record.get_children_range() ==
-                       cond {
-                       would_ignore = true;
-                       break;
-                   },
-                   IgnoreCriteria::JobIgnore(cond) => if record.job == cond {
-                       would_ignore = true;
-                       break;
-                   },
-                   IgnoreCriteria::AgeRange1070Ignore(cond) => if record.get_age_group_1070
-                   (config.created_year) == cond {
-                       would_ignore = true;
-                       break;
-                   },
-                  IgnoreCriteria::YearlyIncomeRangeIgnore(cond) => if record.get_income_range()
-                      == cond {
-                      would_ignore = true;
-                      break;
-                  },
-                   IgnoreCriteria::PrefectureIgnore(cond) => if record.prefecture == cond {
-                       would_ignore = true;
-                       break;
-                   }
-               }
+            let include_map = IncludeCriteria::map_from_vec(&config.includes);
+            for (cat_string, items) in include_map.into_iter() {
+                would_include = false; // Needs to matched and made false to NOT ignore
+                for item in items.into_iter() {
+                    match item {
+                        IncludeCriteria::PurchaseStatusInclude(cond) => if record.status == cond {
+                          would_include = true;
+                          break;
+                        },
+                        IncludeCriteria::MaritalStatusInclude(cond) => if record.marital_status == cond {
+                           would_include = true;
+                           break;
+                        },
+                       IncludeCriteria::GenderInclude(cond) => if record.gender == cond {
+                           would_include = true;
+                           break;
+                       },
+                       IncludeCriteria::ChildrenRangeInclude(cond) => if record.get_children_range() ==
+                           cond {
+                           would_include = true;
+                           break;
+                       },
+                       IncludeCriteria::JobInclude(cond) => if record.job == cond {
+                           would_include = true;
+                           break;
+                       },
+                       IncludeCriteria::AgeRange1070Include(cond) => if record.get_age_group_1070
+                       (config.created_year) == cond {
+                           would_include = true;
+                           break;
+                       },
+                      IncludeCriteria::YearlyIncomeRangeInclude(cond) => if record.get_income_range()
+                          == cond {
+                          would_include = true;
+                          break;
+                      },
+                       IncludeCriteria::PrefectureInclude(cond) => if record.prefecture == cond {
+                           would_include = true;
+                           break;
+                       }
+                    }
+                }
+                if would_include == false { break; }
             }
-            if !would_ignore {
+
+            if would_include {
                 n_records.push(record);
             }
         }

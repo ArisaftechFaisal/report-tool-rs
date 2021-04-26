@@ -20,9 +20,9 @@ use table::{Column, Header, Table};
 use crate::ds::field::ComputedFieldType;
 use csv::Trim::Fields;
 use crate::ds::table::{TableWithMeta, SpecialCase};
-use crate::ds::config::IgnoreCriteria::PurchaseStatusIgnore;
+use crate::ds::config::IncludeCriteria::PurchaseStatusInclude;
 use crate::ds::data::enums::PurchaseStatus;
-use crate::ds::config::IgnoreCriteria;
+use crate::ds::config::IncludeCriteria;
 
 pub struct DataSet {
     pub meta: Meta, // fields: HashMap<>
