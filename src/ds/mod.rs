@@ -35,7 +35,7 @@ impl DataSet {
         RustlyzerError> {
         let meta = Meta::from_json(meta_str)?;
         let mut data = Data::from_csv(content_str)?;
-        let data = DataSet::validate_and_filter(data, &config)?;
+        let data = DataSet::validate_and_filter(data, &meta, &config)?;
         Ok(DataSet { meta, config, data })
     }
 
