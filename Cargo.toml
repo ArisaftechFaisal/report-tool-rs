@@ -1,6 +1,6 @@
 [package]
 name = "report-tool"
-version = "0.5.3"
+version = "0.5.0"
 authors = ["faisal"]
 description = "Report generation tool that takes an input as CSV and metadata regarding the input as json."
 edition = "2018"
