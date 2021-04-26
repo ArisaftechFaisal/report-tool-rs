@@ -5,6 +5,7 @@ use std::collections::HashMap;
 // use anyhow::Result;
 
 mod ds_private;
+mod ds_validation;
 pub mod config;
 pub mod data;
 pub mod field;
@@ -19,9 +20,9 @@ use table::{Column, Header, Table};
 use crate::ds::field::ComputedFieldType;
 use csv::Trim::Fields;
 use crate::ds::table::{TableWithMeta, SpecialCase};
-use crate::ds::config::IgnoreCriteria::PurchaseStatusIgnore;
+use crate::ds::config::IncludeCriteria::PurchaseStatusInclude;
 use crate::ds::data::enums::PurchaseStatus;
-use crate::ds::config::IgnoreCriteria;
+use crate::ds::config::IncludeCriteria;
 
 pub struct DataSet {
     pub meta: Meta, // fields: HashMap<>
@@ -34,65 +35,11 @@ impl DataSet {
         RustlyzerError> {
         let meta = Meta::from_json(meta_str)?;
         let mut data = Data::from_csv(content_str)?;
-        let data = DataSet::validate_and_filter(data, &config)?;
+        let data = DataSet::validate_and_filter(data, &meta, &config)?;
         Ok(DataSet { meta, config, data })
     }
 
-   fn validate_and_filter(mut data: Data, config: &DataSetConfig) -> Result<Data, RustlyzerError> {
-       let mut n_records = Vec::<InputRecord>::with_capacity(data.records.len()/2);
-        for (row, record) in data.records.into_iter().enumerate() {
-           record.validate_birth_year(config.created_year, row)?;
-            let mut would_ignore: bool = false;
-            for &ignore in config.ignores.iter() {
-               match ignore {
-                  IgnoreCriteria::PurchaseStatusIgnore(cond) => if record.status == cond {
-                      would_ignore = true;
-                      break;
-                  },
-                   IgnoreCriteria::MaritalStatusIgnore(cond) => if record.marital_status == cond {
-                       would_ignore = true;
-                       break;
-                   },
-                   IgnoreCriteria::GenderIgnore(cond) => if record.gender == cond {
-                       would_ignore = true;
-                       break;
-                   },
-                   IgnoreCriteria::ChildrenRangeIgnore(cond) => if record.get_children_range() ==
-                       cond {
-                       would_ignore = true;
-                       break;
-                   },
-                   IgnoreCriteria::JobIgnore(cond) => if record.job == cond {
-                       would_ignore = true;
-                       break;
-                   },
-                   IgnoreCriteria::AgeRange1070Ignore(cond) => if record.get_age_group_1070
-                   (config.created_year) == cond {
-                       would_ignore = true;
-                       break;
-                   },
-                  IgnoreCriteria::YearlyIncomeRangeIgnore(cond) => if record.get_income_range()
-                      == cond {
-                      would_ignore = true;
-                      break;
-                  },
-                   IgnoreCriteria::PrefectureIgnore(cond) => if record.prefecture == cond {
-                       would_ignore = true;
-                       break;
-                   }
-               }
-            }
-            if !would_ignore {
-                n_records.push(record);
-            }
-        }
-       data.records = n_records;
-        Ok(data)
-       //  data.records.iter().enumerate().map(|(row,record)| {
-       //      record.validate_birth_year(config.created_year, row).or_else()
-       //  });
-       // Ok(())
-    }
+
 
     pub fn get_fkc_raw_table(&self) -> Result<Table, RustlyzerError> {
         let mut fields = vec![

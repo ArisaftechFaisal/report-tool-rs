@@ -15,9 +15,12 @@ fn main() {
     let output_path = "/home/faisal/output_hot.xlsx";
     let lng = "ja".to_string();
     let created_year = 2021 as u16;
-    let ignores = vec![("purchase-status".to_string(), "評価済み".to_string())];
+    let includes = vec![
+        ("gender".to_string(), "男性".to_string()),
+        ("children".to_string(), "2人".to_string()),
+    ];
 
-    match writer::create_output_file(&path_meta, &path_input, output_path, &lng, created_year, ignores)
+    match writer::create_output_file(&path_meta, &path_input, output_path, &lng, created_year, includes)
     {
         Ok(res) => (),//println!("{:?}", res),
         Err(e) => {
@@ -25,7 +28,7 @@ fn main() {
             println!("{}", e.to_string());
         }
     }
-    let config = report_tool::ds::config::provide_ignore_criteria_constants();
+    let config = report_tool::ds::config::provide_include_criteria_constants();
     // print!("{:#?}", config);
 
 

@@ -45,7 +45,9 @@ pub enum RustlyzerError {
         expected_values: Vec<String>
     },
     #[error("Invalid config item: {0}")]
-    InvalidConfigItemError(String)
+    InvalidConfigItemError(String),
+    #[error("Internal error: {0}")]
+    InternalError(String)
 }
 
 impl From<csv::Error> for RustlyzerError {
