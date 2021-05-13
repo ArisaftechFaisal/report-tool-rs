@@ -1,6 +1,6 @@
 [package]
 name = "report-tool"
-version = "0.5.0"
+version = "0.5.1"
 authors = ["faisal"]
 description = "Report generation tool that takes an input as CSV and metadata regarding the input as json."
 edition = "2018"
@@ -13,7 +13,7 @@ crate-type = ["rlib", "dylib"]
 
 [dependencies]
 libc = "0.2.89"
-csv = "1.1.5"
+csv = "1.1.6"
 serde = { version = "1.0.118", features = ["derive"] }
 serde_json = "1.0.61"
 thiserror = "1.0"
