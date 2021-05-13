@@ -29,7 +29,6 @@ impl Data {
             .has_headers(true)
             .delimiter(b',')
             .double_quote(true)
-            .escape(Some(b'\\'))
             .from_reader(content.as_bytes());
         let mut records: Vec<InputRecord> = Vec::new();
         for result in rdr.deserialize() {

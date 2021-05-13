@@ -10,14 +10,14 @@ use xlsxwriter::Workbook;
 const DATA_PATH: &'static str = "./";
 fn main() {
     let time = std::time::Instant::now();
-    let path_meta = "/home/faisal/meta_hot.json";
-    let path_input = "/home/faisal/input_hot.csv";
-    let output_path = "/home/faisal/output_hot.xlsx";
+    let path_meta = "/home/faisal/meta_len.json";
+    let path_input = "/home/faisal/input_len.csv";
+    let output_path = "/home/faisal/output_len.xlsx";
     let lng = "ja".to_string();
     let created_year = 2021 as u16;
     let includes = vec![
-        ("gender".to_string(), "男性".to_string()),
-        ("children".to_string(), "2人".to_string()),
+        // ("gender".to_string(), "男性".to_string()),
+        // ("children".to_string(), "2人".to_string()),
     ];
 
     match writer::create_output_file(&path_meta, &path_input, output_path, &lng, created_year, includes)
