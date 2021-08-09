@@ -22,12 +22,12 @@ impl DataSet {
             col_vec.push(col);
         }
         // Display
-        col_vec.get_mut(2)?.header.highlight = false;
+        col_vec.get_mut(2).ok_or(RustlyzerError::NoneError)?.header.highlight = false;
         let mut display_contents = Vec::<String>::new();
-        for val in col_vec.get(1)?.contents.iter() {
+        for val in col_vec.get(1).ok_or(RustlyzerError::NoneError)?.contents.iter() {
             display_contents.push(format!("{}件", val));
         }
-        col_vec.get_mut(2)?.contents = display_contents;
+        col_vec.get_mut(2).ok_or(RustlyzerError::NoneError)?.contents = display_contents;
         Ok(Table::new(col_vec))
     }
 
@@ -47,20 +47,20 @@ impl DataSet {
             col_vec.push(col);
         }
         // Graph Display & Percentage
-        col_vec.get_mut(2)?.header.highlight = false;
-        col_vec.get_mut(3)?.header.highlight = false;
+        col_vec.get_mut(2).ok_or(RustlyzerError::NoneError)?.header.highlight = false;
+        col_vec.get_mut(3).ok_or(RustlyzerError::NoneError)?.header.highlight = false;
         let total: f64 = self.data.records.len() as f64;
         let mut graph_display_contents = Vec::<String>::new();
         let mut percentage_contents = Vec::<String>::new();
-        for (i, val) in col_vec.get(1)?.contents.iter().enumerate() {
+        for (i, val) in col_vec.get(1).ok_or(RustlyzerError::NoneError)?.contents.iter().enumerate() {
             let num_val = val.parse::<usize>()?;
-            graph_display_contents.push(format!("{}(n={})", col_vec.get(0)?.contents.get(i)
-               ?, num_val));
+            graph_display_contents.push(format!("{}(n={})", col_vec.get(0).ok_or(RustlyzerError::NoneError)?.contents.get(i)
+               .ok_or(RustlyzerError::NoneError)?, num_val));
             percentage_contents.push(format!("{:.1}%", (num_val as f64/ total) * 100.0));
         }
-        col_vec.get_mut(2)?.contents = graph_display_contents;
-        col_vec.get_mut(3)?.contents = percentage_contents;
-        col_vec.get_mut(3)?.footer = Some("100.0%".to_string());
+        col_vec.get_mut(2).ok_or(RustlyzerError::NoneError)?.contents = graph_display_contents;
+        col_vec.get_mut(3).ok_or(RustlyzerError::NoneError)?.contents = percentage_contents;
+        col_vec.get_mut(3).ok_or(RustlyzerError::NoneError)?.footer = Some("100.0%".to_string());
 
 
         Ok(Table::new(col_vec))

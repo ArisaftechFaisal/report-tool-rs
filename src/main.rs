@@ -10,9 +10,9 @@ use xlsxwriter::Workbook;
 const DATA_PATH: &'static str = "./";
 fn main() {
     let time = std::time::Instant::now();
-    let path_meta = "/home/faisal/meta_len.json";
-    let path_input = "/home/faisal/input_len.csv";
-    let output_path = "/home/faisal/output_len.xlsx";
+    let path_meta = "/home/faisal/Downloads/test.json";
+    let path_input = "/home/faisal/Downloads/test.csv";
+    let output_path = "/home/faisal/Downloads/output_len.xlsx";
     let lng = "ja".to_string();
     let created_year = 2021 as u16;
     let includes = vec![

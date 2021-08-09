@@ -5,6 +5,7 @@ use super::meta::{Meta, CustomFieldVariant, CustomField};
 use super::data::{input_record::InputRecord, Data};
 use crate::errors::RustlyzerError;
 use serde_json::Value;
+use crate::helpers::strings::into_clean_string;
 
 impl DataSet {
     pub(super) fn validate_and_filter(mut data: Data, meta: &Meta, config: &DataSetConfig) ->
@@ -59,6 +60,7 @@ impl DataSet {
                 }
                 if would_include == false { break; }
             }
+            DataSet::clean_data(&mut record);
 
             if would_include {
                 n_records.push(record);
@@ -94,5 +96,20 @@ impl DataSet {
             }
         }
         Ok(())
+    }
+
+    fn clean_data(mut record: &mut InputRecord) -> () {
+        for (_, v) in record.custom_fields.iter_mut() {
+            match &v {
+                Some(val) => match val {
+                   Value::String(s) => {
+                     *v = Some(Value::String(into_clean_string(s)));
+                     ()
+                    },
+                    _ => ()
+                },
+                None => ()
+            }
+        }
     }
 }

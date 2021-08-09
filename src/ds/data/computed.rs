@@ -241,7 +241,7 @@ impl Data {
             FieldType::Custom(custom_index) =>  {
                     // let key = meta.get_custom_field_option_key(&field, &value)?;
                 for record in self.records.iter() {
-                    match record.custom_fields.get(custom_index)? {
+                    match record.custom_fields.get(custom_index).ok_or(RustlyzerError::NoneError)? {
                         Some(Value::String(s)) => {
                             map.entry(s.to_string())
                                .and_modify(|e| { *e += 1; });
@@ -329,7 +329,7 @@ impl Data {
                 FieldType::Custom(custom_index) => {
                    // let key = meta.get_custom_field_option_key(&field, &value)?;
                     for record in self.records.iter() {
-                        let does_exist: bool= match record.custom_fields.get(custom_index)? {
+                        let does_exist: bool= match record.custom_fields.get(custom_index).ok_or(RustlyzerError::NoneError)? {
                             Some(Value::String(s)) => if s == value { true } else { false },
                             Some(Value::Number(n)) => if n.to_string() == *value { true } else
                             {false},
@@ -383,7 +383,7 @@ impl Data {
                 FieldType::Custom(custom_index) => {
                     // let key = meta.get_custom_field_option_key(&field, &value)?;
                     for record in self.records.iter() {
-                        let does_exist: bool = match record.custom_fields.get(custom_index)? {
+                        let does_exist: bool = match record.custom_fields.get(custom_index).ok_or(RustlyzerError::NoneError)? {
                             Some(Value::String(s)) => if s == value { true } else { false },
                             Some(Value::Number(n)) => if n.to_string() == *value { true } else {
                                 false },
@@ -468,7 +468,7 @@ impl Data {
             FieldType::Custom(custom_index) => {
                 if meta.is_custom_field_multiselect(field) {
                     // println!("is multiselect");
-                    match record.custom_fields.get(custom_index)? {
+                    match record.custom_fields.get(custom_index).ok_or(RustlyzerError::NoneError)? {
                         Some(Value::Array(arr)) => {
                             let mut iter = arr.iter();
                             while let Some(Value::String(s)) = iter.next() {

@@ -19,7 +19,7 @@ pub struct Meta {
 
 impl Meta {
     pub fn from_json(content: &str) -> Result<Self, RustlyzerError> {
-        match serde_json::from_str::<MetaInput>(content) {
+        let res = match serde_json::from_str::<MetaInput>(content) {
             Ok(metadata) => {
                 // println!("Parsed JSON struct: {:?}", metadata);
                 let mut custom_fields_hashmap = HashMap::<usize, CustomField>::new();
@@ -50,9 +50,11 @@ impl Meta {
             }
             Err(e) => {
                 // println!("{:?}", e);
-                Err(RustlyzerError::MetadataWrongFormat)
+                Err(RustlyzerError::MetadataWrongFormat(e.to_string()))
             }
-        }
+        };
+        // println!("{:#?}", res);
+        res
     }
 
     pub fn get_custom_field_title(&self, field: &FieldType) -> Result<String, RustlyzerError> {
@@ -131,16 +133,27 @@ impl Meta {
            return match &self.custom_fields.get(i).ok_or(RustlyzerError::CustomFieldNotInRecords)?
                 .variant {
                 CustomFieldVariant::MultiSelect { options } |
-                CustomFieldVariant::Dropdown { options } |
-                CustomFieldVariant::Radio { options } => {
+                CustomFieldVariant::Dropdown { options } => {
                     for (k,v) in options.iter() {
                        if v == value {
                            return Ok(k.to_owned());
                        }
                     }
                     return Err(RustlyzerError::KeyNotInOptions);
-                    // Ok(options.get(key).ok_or
-                    // (RustlyzerError::KeyNotInOptions)?.to_owned())
+                },
+                CustomFieldVariant::Radio { radio_type } => match radio_type {
+                    RadioEnum::Standard { options } => {
+                        for (k,v) in options.iter() {
+                           if v == value {
+                               return Ok(k.to_owned());
+                           }
+                        }
+                        return Err(RustlyzerError::KeyNotInOptions);
+                        // Ok(options.get(key).ok_or
+                        // (RustlyzerError::KeyNotInOptions)?.to_owned())
+                    },
+                    RadioEnum::Relative { options_from_key} =>
+                        self.get_custom_field_option_key(&FieldType::Custom(options_from_key.clone()), value)
                 }
                 _ => Err(RustlyzerError::WrongArgument)
             }
@@ -169,10 +182,17 @@ impl Meta {
             return match &self.custom_fields.get(i).ok_or(RustlyzerError::CustomFieldNotInRecords)?
                 .variant {
                 CustomFieldVariant::MultiSelect { options } |
-                CustomFieldVariant::Dropdown { options } |
-                CustomFieldVariant::Radio { options } => {
+                CustomFieldVariant::Dropdown { options } => {
                     Ok(options.get(key).ok_or
                     (RustlyzerError::KeyNotInOptions)?.to_owned())
+                },
+                CustomFieldVariant::Radio { radio_type } => match radio_type {
+                    RadioEnum::Standard { options } => {
+                        Ok(options.get(key).ok_or
+                        (RustlyzerError::KeyNotInOptions)?.to_owned())
+                    },
+                    RadioEnum::Relative { options_from_key } =>
+                        self.get_custom_field_option_value(&FieldType::Custom(options_from_key.clone()), key)
                 }
                 _ => Err(RustlyzerError::WrongArgument)
             }
@@ -193,11 +213,18 @@ impl Meta {
                     .variant;
                 match variant {
                     CustomFieldVariant::MultiSelect { options } |
-                    CustomFieldVariant::Dropdown { options } |
-                    CustomFieldVariant::Radio { options } => Ok(options
+                    CustomFieldVariant::Dropdown { options } => Ok(options
                         .keys()
                         .map(|k| k.to_owned())
                         .collect::<Vec<String>>()),
+                    CustomFieldVariant::Radio { radio_type } => match radio_type {
+                        RadioEnum::Standard { options } => Ok(options
+                            .keys()
+                            .map(|k| k.to_owned())
+                            .collect::<Vec<String>>()),
+                        RadioEnum::Relative { options_from_key } =>
+                            self.get_custom_field_option_keys(&FieldType::Custom(options_from_key.clone()))
+                    }
                     _ => Err(RustlyzerError::WrongArgument),
                 }
             }
@@ -216,12 +243,24 @@ impl Meta {
                     .variant;
                 match variant {
                     CustomFieldVariant::MultiSelect { options } |
-                    CustomFieldVariant::Dropdown { options } |
-                    CustomFieldVariant::Radio { options } => Ok(options
+                    CustomFieldVariant::Dropdown { options } => Ok(options
                         .values()
                         .map(|k| k.to_owned())
                         .collect::<Vec<String>>()),
+                    CustomFieldVariant::Radio { radio_type } => match radio_type {
+                        RadioEnum::Standard { options } => Ok(options
+                            .values()
+                            .map(|k| k.to_owned())
+                            .collect::<Vec<String>>()),
+                        RadioEnum::Relative { options_from_key } =>
+                            self.get_custom_field_option_values(&FieldType::Custom(options_from_key.clone()))
+                    }
                     _ => Err(RustlyzerError::WrongArgument),
+                    // CustomFieldVariant::Radio { options } => Ok(options
+                    //     .values()
+                    //     .map(|k| k.to_owned())
+                    //     .collect::<Vec<String>>()),
+                    // _ => Err(RustlyzerError::WrongArgument),
                 }
             }
             _ => Err(RustlyzerError::WrongArgument),
@@ -265,12 +304,8 @@ pub enum CustomFieldVariant {
     /// Value options are in options: Vec<FieldOption>
     #[serde(rename = "radio")]
     Radio {
-        #[serde(
-            rename = "Options",
-            skip_serializing,
-            deserialize_with = "options_as_map"
-        )]
-        options: IndexMap<String, String>,
+        #[serde(flatten)]
+        radio_type: RadioEnum
     },
     /// MultiSelect custom field.
     /// Value options are in options: Vec<FieldOption>
@@ -297,6 +332,33 @@ pub enum CustomFieldVariant {
     },
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(untagged)]
+pub enum RadioEnum {
+    Standard {
+        #[serde(
+        rename = "Options",
+        skip_serializing,
+        deserialize_with = "options_as_map"
+        )]
+        options: IndexMap<String, String>,
+    },
+    Relative {
+               #[serde(
+    rename = "OptionsFromKey",
+    skip_serializing,
+    deserialize_with = "options_from_key_as_usize"
+    )]
+    options_from_key: usize
+    }
+}
+
+// TODO: use ref for relative options
+// enum RelativeOptions<'a> {
+//     Num(usize),
+//     Ref(&'a IndexMap<String, String>)
+// }
+
 fn options_as_map<'de, D>(de: D) -> Result<IndexMap<String, String>, D::Error>
 where
     D: serde::Deserializer<'de>,
@@ -307,6 +369,15 @@ where
         .map(|opt| (opt.value, opt.label))
         .collect::<Vec<(String, String)>>();
     Ok(IndexMap::from_iter(options.into_iter()))
+}
+
+fn options_from_key_as_usize<'de, D>(de: D) -> Result<usize, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let options_from_key = String::deserialize(de)?;
+    let options_as_usize = usize::extract_from_str(&options_from_key).ok_or(RustlyzerError::MetadataWrongFormat(format!("{:?} cannot be used as field reference.", &options_from_key))).unwrap();
+    Ok(options_as_usize)
 }
 
 /// CustomField containing the metadata for one custom field.

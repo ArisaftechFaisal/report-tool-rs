@@ -1,13 +1,12 @@
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 use thiserror::Error;
-use std::option::NoneError;
 use std::num::ParseIntError;
 
 #[derive(Error, Debug, Deserialize, Serialize)]
 pub enum RustlyzerError {
-    #[error("Wrong format for metadata json")]
-    MetadataWrongFormat,
+    #[error("Wrong format for metadata json: {0}")]
+    MetadataWrongFormat(String),
     #[error("Wrong format for csv input data: {0}")]
     CsvInputWrongFormat(String),
     #[error("Index out of range")]
@@ -72,10 +71,6 @@ impl From<xlsxwriter::XlsxError> for RustlyzerError {
     fn from(err: xlsxwriter::XlsxError) -> Self {
         RustlyzerError::XlsxError(err.to_string())
     }
-}
-
-impl From<NoneError> for RustlyzerError {
-    fn from(err: NoneError) -> Self { RustlyzerError::NoneError}
 }
 
 impl From<ParseIntError> for RustlyzerError {

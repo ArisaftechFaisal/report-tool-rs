@@ -3,6 +3,8 @@ use std::fmt::Debug;
 use crate::errors::RustlyzerError;
 use convert_case::{Casing, Case};
 
+pub mod strings;
+
 pub trait CustomHelpers<T> {
     fn below_half(&self, exp: u8) -> bool;
     fn above_zero(&self, exp: u8) -> bool;
