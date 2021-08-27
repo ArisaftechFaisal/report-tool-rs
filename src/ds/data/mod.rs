@@ -8,8 +8,6 @@ use hashbrown::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use super::meta::{Meta, CustomFieldVariant};
-// use std::iter::Iterator;
-// use std::process::Child;
 
 pub mod computed;
 pub mod input_record;
@@ -33,7 +31,6 @@ impl Data {
         let mut records: Vec<InputRecord> = Vec::new();
         for result in rdr.deserialize() {
             let record: InputRecord = result?;
-            // println!("{:?}", record);
             records.push(record);
         }
         Ok(Data { records })
