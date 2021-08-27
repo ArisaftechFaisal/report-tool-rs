@@ -12,7 +12,7 @@ fn main() {
     let time = std::time::Instant::now();
     let path_meta = "/home/faisal/Downloads/test.json";
     let path_input = "/home/faisal/Downloads/test.csv";
-    let output_path = "/home/faisal/Downloads/output_len.xlsx";
+    let output_path = "/home/faisal/Downloads/output.xlsx";
     let lng = "ja".to_string();
     let created_year = 2021 as u16;
     let includes = vec![

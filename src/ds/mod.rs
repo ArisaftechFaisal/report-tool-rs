@@ -56,7 +56,6 @@ impl DataSet {
             FieldType::Children,
             FieldType::YearlyIncome,
         ];
-        // fields.extend(self.custom_fields_with_options_all());
         fields.extend(self.custom_fields_except_html());
         let mut cols = Vec::<Column>::new();
         for field in fields.iter() {
@@ -83,7 +82,6 @@ impl DataSet {
             FieldType::MaritalStatusAndChildren,
             FieldType::YearlyIncome,
         ];
-        // fields.extend(self.custom_fields_with_options_all());
         fields.extend(self.custom_fields_except_html());
         let mut cols = Vec::<Column>::new();
         for field in fields.iter() {
@@ -173,12 +171,13 @@ impl DataSet {
     pub fn get_aggregate_tables(&self) -> Result<Vec<TableWithMeta>, RustlyzerError> {
         let fields = self.custom_fields_with_options_all();
         let mut table_with_meta_vec = Vec::<TableWithMeta>::new();
+        // Total number of user responses
+        let total = self.data.len() as f64;
         for field in fields.iter() {
             if let Ok(map) = self.data.get_custom_field_map(field, &self.meta) {
             let col_labels = map.keys().cloned().collect::<Vec<String>>();
             let col_values = map.values().cloned().collect::<Vec<usize>>();
             let mut col_percentage = Vec::<f64>::new();
-            let total = col_values.iter().sum::<usize>() as f64;
             col_values.iter().for_each(|v| col_percentage.push((*v as f64 / total) * 100.0));
             let table = TableWithMeta::new(
                 vec![
@@ -194,7 +193,6 @@ impl DataSet {
                 Column::from_contents(Header::new("割合".to_string(), false), col_percentage
                     .into_iter().map(|val| format!("{:.2}%", val)).collect(), None),
             ]));
-            // println!("step18");
             table_with_meta_vec.push(table);
             }
 
@@ -214,10 +212,8 @@ impl DataSet {
             FieldType::YearlyIncome,
         ];
         fields.append(&mut self.custom_fields_with_options_all());
-        // println!("{:?}", fields);
         let mut tables = Vec::<TableWithMeta>::new();
         for field_base in fields.iter() {
-            // println!("Field base: {:?}", field_base);
             let variants = self.data.get_field_variants_as_string(
                 field_base,
                 &self.meta,
@@ -246,26 +242,20 @@ impl DataSet {
                 SpecialCase::SpaceAndHighlightOn4,
                 Table::new(cols_primary)
             ));
-            // tables.push(Table::new(cols_primary));
 
             // Secondary columns (crosstabs)
             for field_secondary in fields.iter() {
-                // println!("    Field Secondary: {:?}", field_secondary);
                 let variants_secondary = self.data.get_field_variants_as_string(
                     field_secondary,
                     &self.meta,
                     self.config.lng
                 )?;
-                // println!("      -- step1");
                 let mut cols = self.get_crosstab_base_cols(field_secondary)?;
-                // println!("      -- step2");
                 let mut cols_data = Vec::<Column>::new();
                 variants.iter().for_each(|v| cols_data.push(
                     Column::new(Header::new(v.to_string(), true), None, variants_secondary.len())
                 ));
-                // println!("      -- step3");
                 for variant_secondary in variants_secondary.iter() {
-                    // println!("    --Variant Secondary: {:?}", variant_secondary);
                     let row: Vec<String>;
                     if let CrosstabType::N = crosstab_type {
                         row = self.data.get_count_distribution(
@@ -286,8 +276,6 @@ impl DataSet {
                             self.config.lng
                         )?;
                     }
-                    // println!("      -- Row length: {}", row.len());
-                    // println!("      -- Variants length: {}", variants.len());
                     if row.len() != variants.len() { panic!("Wrong variant length!")}
                     row.iter().enumerate().for_each(|(i, val)| {
                         cols_data.get_mut(i).unwrap().contents.push(val.to_owned())
@@ -298,7 +286,6 @@ impl DataSet {
                     SpecialCase::None,
                     Table::new(cols)
                 ));
-                // tables.push(Table::new(cols));
             }
         }
         Ok(tables)
