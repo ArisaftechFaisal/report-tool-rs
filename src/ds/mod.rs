@@ -172,11 +172,12 @@ impl DataSet {
         let fields = self.custom_fields_with_options_all();
         let mut table_with_meta_vec = Vec::<TableWithMeta>::new();
         // Total number of user responses
-        let total = self.data.len() as f64;
+        // let total = self.data.len() as f64;
         for field in fields.iter() {
             if let Ok(map) = self.data.get_custom_field_map(field, &self.meta) {
             let col_labels = map.keys().cloned().collect::<Vec<String>>();
             let col_values = map.values().cloned().collect::<Vec<usize>>();
+            let total = self.data.get_custom_field_total(field, &self.meta) as f64;
             let mut col_percentage = Vec::<f64>::new();
             col_values.iter().for_each(|v| col_percentage.push((*v as f64 / total) * 100.0));
             let table = TableWithMeta::new(

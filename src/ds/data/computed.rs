@@ -520,6 +520,25 @@ impl Data {
        }
     }
 
+    pub fn get_custom_field_total(&self, field: &FieldType, meta: &Meta) -> 
+        usize {
+            let mut total: usize = 0;
+            match field {
+                FieldType::Custom(_) => {
+                    for record in self.records.iter() {
+                        if let Ok(Some(x)) = record.get_custom_field(field) {
+                            match x {
+                                Value::Null => continue,
+                                _ => total += 1
+                            }
+                        }
+                    }
+                },
+                _ => panic!("Called get_custom_field_total on non-custom-computed field.")
+            }
+            total
+        }
+
     pub fn get_custom_field_map(&self, field: &FieldType, meta: &Meta) ->
             Result<IndexMap<String, usize>, RustlyzerError> {
         let time = std::time::Instant::now();

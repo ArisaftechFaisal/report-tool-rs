@@ -128,10 +128,10 @@ impl InputRecord {
                 for nval in arr.iter() {
                     narr.push(self.get_value_inner_str(nval));
                 }
-                format!("{:?}", narr)
+                format!("{}", "[\"".to_owned() + narr.join("\",\"").as_str() + "\"]")
             }
-            Value::Bool(val) => format!("{:?}", val),
-            Value::Null => format!("null"), // TODO: need to change this
+            Value::Bool(val) => format!("{}", val),
+            Value::Null => format!("NULL"), // TODO: need to change this
             Value::Object(val) => format!("{:?}", val),
         }
     }
